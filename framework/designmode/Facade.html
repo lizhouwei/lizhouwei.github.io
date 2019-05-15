@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>外观模式 | lizhouwei</title>
+    <meta name="description" content="博学之，审问之，慎思之，眀辨之，笃行之">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
+    
+    <link rel="preload" href="/assets/css/0.styles.3e1d0bd1.css" as="style"><link rel="preload" href="/assets/js/app.b754686d.js" as="script"><link rel="preload" href="/assets/js/25.09c47cf9.js" as="script"><link rel="prefetch" href="/assets/js/10.dc6a57bc.js"><link rel="prefetch" href="/assets/js/11.05a7896a.js"><link rel="prefetch" href="/assets/js/12.87f729cc.js"><link rel="prefetch" href="/assets/js/13.b783eb80.js"><link rel="prefetch" href="/assets/js/14.fe15610f.js"><link rel="prefetch" href="/assets/js/15.4d747cf5.js"><link rel="prefetch" href="/assets/js/16.12cc21ce.js"><link rel="prefetch" href="/assets/js/17.87e584b1.js"><link rel="prefetch" href="/assets/js/18.a408f5f0.js"><link rel="prefetch" href="/assets/js/19.e175f669.js"><link rel="prefetch" href="/assets/js/2.81340e14.js"><link rel="prefetch" href="/assets/js/20.c6e6f090.js"><link rel="prefetch" href="/assets/js/21.b92c5565.js"><link rel="prefetch" href="/assets/js/22.eb576cbd.js"><link rel="prefetch" href="/assets/js/23.08a7db77.js"><link rel="prefetch" href="/assets/js/24.d61aae73.js"><link rel="prefetch" href="/assets/js/26.116135c4.js"><link rel="prefetch" href="/assets/js/27.d0014973.js"><link rel="prefetch" href="/assets/js/28.9267b2b6.js"><link rel="prefetch" href="/assets/js/29.41694a7d.js"><link rel="prefetch" href="/assets/js/3.df97d12b.js"><link rel="prefetch" href="/assets/js/30.02a18457.js"><link rel="prefetch" href="/assets/js/31.a2736d54.js"><link rel="prefetch" href="/assets/js/32.b6f1a898.js"><link rel="prefetch" href="/assets/js/33.2327629e.js"><link rel="prefetch" href="/assets/js/34.d381e84e.js"><link rel="prefetch" href="/assets/js/35.61f98868.js"><link rel="prefetch" href="/assets/js/36.4c841ea5.js"><link rel="prefetch" href="/assets/js/37.681ae4cb.js"><link rel="prefetch" href="/assets/js/38.58a9ee5e.js"><link rel="prefetch" href="/assets/js/39.4b09873b.js"><link rel="prefetch" href="/assets/js/4.283ac3a2.js"><link rel="prefetch" href="/assets/js/40.128c670d.js"><link rel="prefetch" href="/assets/js/41.4e5a175a.js"><link rel="prefetch" href="/assets/js/42.9931eddc.js"><link rel="prefetch" href="/assets/js/43.865cca26.js"><link rel="prefetch" href="/assets/js/44.5755d469.js"><link rel="prefetch" href="/assets/js/45.febddf97.js"><link rel="prefetch" href="/assets/js/46.7562b5b2.js"><link rel="prefetch" href="/assets/js/5.57704351.js"><link rel="prefetch" href="/assets/js/6.955fc97c.js"><link rel="prefetch" href="/assets/js/7.0d473d0c.js"><link rel="prefetch" href="/assets/js/8.156d9fda.js"><link rel="prefetch" href="/assets/js/9.9d034739.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.3e1d0bd1.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">lizhouwei</span></a> <div class="links" style="max-width:nullpx;"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">首页</a></div><div class="nav-item"><a href="/java/" class="nav-link">java语言</a></div><div class="nav-item"><a href="/algorithm/" class="nav-link">数据结构与算法</a></div><div class="nav-item"><a href="/framework/" class="nav-link router-link-active">框架</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">链接</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/lizhouwei" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  github
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li><li class="dropdown-item"><!----> <a href="https://www.cnblogs.com/lizhouwei/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  博客园
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div><div class="nav-item"><a href="/about/" class="nav-link">关于</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">首页</a></div><div class="nav-item"><a href="/java/" class="nav-link">java语言</a></div><div class="nav-item"><a href="/algorithm/" class="nav-link">数据结构与算法</a></div><div class="nav-item"><a href="/framework/" class="nav-link router-link-active">框架</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">链接</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/lizhouwei" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  github
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li><li class="dropdown-item"><!----> <a href="https://www.cnblogs.com/lizhouwei/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  博客园
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div><div class="nav-item"><a href="/about/" class="nav-link">关于</a></div> <!----></nav>  <ul class="sidebar-links"><li><div class="sidebar-group first collapsable"><p class="sidebar-heading"><span>spring</span> <span class="arrow right"></span></p> <!----></div></li><li><div class="sidebar-group collapsable"><p class="sidebar-heading"><span>spring-core</span> <span class="arrow right"></span></p> <!----></div></li><li><div class="sidebar-group collapsable"><p class="sidebar-heading"><span>spring-beans</span> <span class="arrow right"></span></p> <!----></div></li><li><div class="sidebar-group collapsable"><p class="sidebar-heading"><span>spring-aop</span> <span class="arrow right"></span></p> <!----></div></li><li><div class="sidebar-group collapsable"><p class="sidebar-heading"><span>springBoot</span> <span class="arrow right"></span></p> <!----></div></li><li><div class="sidebar-group collapsable"><p class="sidebar-heading open"><span>设计模式</span> <span class="arrow down"></span></p> <ul class="sidebar-group-items"><li><a href="/framework/designmode/" class="sidebar-link">简介</a></li><li><a href="/framework/designmode/principle/" class="sidebar-link">设计模式遵循的设计原则</a></li><li><a href="/framework/designmode/UML.html" class="sidebar-link">统一建模语言UML</a></li><li><a href="/framework/designmode/FactoryMethod.html" class="sidebar-link">工厂方法模式</a></li><li><a href="/framework/designmode/AbstractFactory.html" class="sidebar-link">抽象工厂模式</a></li><li><a href="/framework/designmode/Builder.html" class="sidebar-link">构建者模式</a></li><li><a href="/framework/designmode/Facade.html" class="active sidebar-link">外观模式</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/framework/designmode/Facade.html#简介" class="sidebar-link">简介</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/framework/designmode/Facade.html#代码结构示意" class="sidebar-link">代码结构示意</a></li></ul></li><li class="sidebar-sub-header"><a href="/framework/designmode/Facade.html#代码示例一" class="sidebar-link">代码示例一</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/framework/designmode/Facade.html#不使用设计模式" class="sidebar-link">不使用设计模式</a></li><li class="sidebar-sub-header"><a href="/framework/designmode/Facade.html#使用设计模式" class="sidebar-link">使用设计模式</a></li></ul></li><li class="sidebar-sub-header"><a href="/framework/designmode/Facade.html#模式讲解" class="sidebar-link">模式讲解</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/framework/designmode/Facade.html#认识外观模式" class="sidebar-link">认识外观模式</a></li><li class="sidebar-sub-header"><a href="/framework/designmode/Facade.html#外观模式的优缺点" class="sidebar-link">外观模式的优缺点</a></li><li class="sidebar-sub-header"><a href="/framework/designmode/Facade.html#相关模式" class="sidebar-link">相关模式</a></li></ul></li></ul></li><li><a href="/framework/designmode/Adapter.html" class="sidebar-link">适配器模式</a></li></ul></div></li></ul> </div> <div class="page"> <div class="content"><h1 id="外观模式"><a href="#外观模式" aria-hidden="true" class="header-anchor">#</a> 外观模式</h1> <h2 id="简介"><a href="#简介" aria-hidden="true" class="header-anchor">#</a> 简介</h2> <p>外观模式是为子系统的一组接口提供一个一致的界面，Facade模式定义了一个高层接口，这个接口使得这一子系统更加容易使用，外观模式很好的体现了“最少知道原则”。</p> <h3 id="代码结构示意"><a href="#代码结构示意" aria-hidden="true" class="header-anchor">#</a> 代码结构示意</h3> <ol><li>定义各模块生成器接口</li></ol> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">AModuleApi</span><span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testA</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">BModuleApi</span><span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testB</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">CModuleApi</span><span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testC</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+</code></pre></div><ol start="2"><li>定义各模块生成器接口的实现</li></ol> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AModuleApiImpl</span> <span class="token keyword">implements</span> <span class="token class-name">AModuleApi</span><span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testA</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;AModuleApiImpl&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">BModuleApiImpl</span> <span class="token keyword">implements</span> <span class="token class-name">BModuleApi</span><span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testB</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;BModuleApiImpl&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CModuleApiImpl</span> <span class="token keyword">implements</span> <span class="token class-name">CModuleApi</span><span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testC</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;CModuleApiImpl&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ol start="3"><li>定义外观对象,也可以将test方法定义为静态方法，方便调用。</li></ol> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Facade</span><span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token class-name">AModuleApi</span> aModuleApi <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AModuleApiImpl</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token class-name">BModuleApi</span> bModuleApi <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BModuleApiImpl</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token class-name">CModuleApi</span> cModuleApi <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CModuleApiImpl</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+
+    aModuleApi<span class="token punctuation">.</span><span class="token function">testA</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    bModuleApi<span class="token punctuation">.</span><span class="token function">testB</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    cModuleApi<span class="token punctuation">.</span><span class="token function">testC</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ol start="4"><li>客户端使用</li></ol> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Client</span><span class="token punctuation">{</span>
+
+  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token class-name">Facade</span> facade <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Facade</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    facade<span class="token punctuation">.</span><span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="代码示例一"><a href="#代码示例一" aria-hidden="true" class="header-anchor">#</a> 代码示例一</h2> <p>设计一个代码生成工具，代码生成工具生成的每个模块都具有基本的三层架构，分为表现层、逻辑层、数据层，每个模块模块究竟需要生成哪些层的代码。比如，通过配置来描述，是只需要生成表现层代码还是三层都生成。</p> <h3 id="不使用设计模式"><a href="#不使用设计模式" aria-hidden="true" class="header-anchor">#</a> 不使用设计模式</h3> <ol><li>描述配置的对象。</li></ol> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Config</span><span class="token punctuation">{</span>
+
+  <span class="token comment">//是否需要生成表现层 默认是true</span>
+  <span class="token keyword">private</span> <span class="token keyword">boolean</span> needGenPresentation <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+
+  <span class="token comment">//是否需要生成逻辑层，默认是true</span>
+  <span class="token keyword">private</span> <span class="token keyword">boolean</span> needGenBusiness <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+
+  <span class="token comment">//是否需要生成Dao, 默认是true;</span>
+  <span class="token keyword">private</span> <span class="token keyword">boolean</span> needGenDao <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setNeedGenPresentation</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> needGenPresentation<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>needGenPresentation <span class="token operator">=</span> needGenPresentation<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isNeedGenPresentation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>needGenPresentation<span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setNeedGenBusiness</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> needGenBusiness<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>needGenBusiness <span class="token operator">=</span> needGenBusiness<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isNeedGenBusiness</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>needGenBusiness<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setNeedGenDao</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> needGenDao<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>needGenDao <span class="token operator">=</span> needGenDao<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isNeedGenDao</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>needGenDao<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ol start="2"><li>从配置文件中读取配置信息</li></ol> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConfigManager</span><span class="token punctuation">{</span>
+
+  <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token class-name">ConfigManager</span> manager <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token class-name">Config</span> config <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">private</span> <span class="token class-name">ConfigManager</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token punctuation">}</span>
+
+  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">ConfigManager</span> <span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+   
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>manager <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>manager <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConfigManager</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>config <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Config</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token comment">//读取配置文件，把值设置到config对象中去</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>manager<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">public</span> <span class="token class-name">Config</span> <span class="token function">getConfig</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>config<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ol start="3"><li>各生成代码的实现</li></ol> <ul><li>生成表现层</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Presentation</span><span class="token punctuation">{</span>
+
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">genrate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token class-name">Config</span> config <span class="token operator">=</span> <span class="token class-name">ConfigManager</span><span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getConfig</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>config<span class="token punctuation">.</span>isNeedGenPresentation<span class="token punctuation">)</span><span class="token punctuation">{</span>
+      <span class="token comment">//生成表现层代码</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>生成业务逻辑层</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Business</span><span class="token punctuation">{</span>
+
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">genrate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token class-name">Config</span> config <span class="token operator">=</span> <span class="token class-name">ConfigManager</span><span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getConfig</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>config<span class="token punctuation">.</span>isNeedGenBusiness<span class="token punctuation">)</span><span class="token punctuation">{</span>
+      <span class="token comment">//生成业务逻辑层代码</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>生成Dao层</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Dao</span><span class="token punctuation">{</span>
+
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">genrate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token class-name">Config</span> config <span class="token operator">=</span> <span class="token class-name">ConfigManager</span><span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getConfig</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>config<span class="token punctuation">.</span>isNeedGenDao<span class="token punctuation">)</span><span class="token punctuation">{</span>
+      <span class="token comment">//生成Dao层代码</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ol start="4"><li>客户端调用</li></ol> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Client</span><span class="token punctuation">{</span>
+
+  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token class-name">Presentation</span> presentation <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Presentation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">Business</span> business <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Business</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">Dao</span> dao <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Dao</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    presentation<span class="token punctuation">.</span><span class="token function">genrate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    business<span class="token punctuation">.</span><span class="token function">genrate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    dao<span class="token punctuation">.</span><span class="token function">genrate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="tip custom-block"><p class="custom-block-title">TIP</p> <p>在不使用设计模式时，客户端为了使用生成代码功能，需要与生成代码子系统内部的多个模块交互。这使得各模块与客户端高度耦合，如果其中某个模块变化时，会引起客户端变化。</p></div> <h3 id="使用设计模式"><a href="#使用设计模式" aria-hidden="true" class="header-anchor">#</a> 使用设计模式</h3> <p>使用设计模式重写上面示例，只需要添加一个Facade的对象，然后在里面实现客户端需要的功能即可。</p> <ol><li>新建Facade对象</li></ol> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Facade</span><span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">generate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token class-name">Presentation</span> presentation <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Presentation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">Business</span> business <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Business</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">Dao</span> dao <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Dao</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    presentation<span class="token punctuation">.</span><span class="token function">genrate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    business<span class="token punctuation">.</span><span class="token function">genrate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    dao<span class="token punctuation">.</span><span class="token function">genrate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ol start="2"><li>客户端调用</li></ol> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Client</span><span class="token punctuation">{</span>
+
+  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token class-name">Facade</span> facade <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Facade</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    facade<span class="token punctuation">.</span><span class="token function">generate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="模式讲解"><a href="#模式讲解" aria-hidden="true" class="header-anchor">#</a> 模式讲解</h2> <h3 id="认识外观模式"><a href="#认识外观模式" aria-hidden="true" class="header-anchor">#</a> 认识外观模式</h3> <ol><li>外观模式的目的<br>
+外观模式的目的不是给子系统添加新的功能接口，而是为了让外部减少与子系统内多个模块的交互，消除与多个模块的耦合，从而让外部能简单的使用子系统。</li></ol> <div class="tip custom-block"><p class="custom-block-title">TIP</p> <p>因为外观是当作子系统对外的接口出现的，虽然在外观中可以定义一些子系统没有的功能，但是不建议这么做，因为外观应该是包装已有的功能，主要负责组合已有功能来实现客户需要，而不是添加新的实现。</p></div> <h3 id="外观模式的优缺点"><a href="#外观模式的优缺点" aria-hidden="true" class="header-anchor">#</a> 外观模式的优缺点</h3> <h4 id="优点"><a href="#优点" aria-hidden="true" class="header-anchor">#</a> 优点</h4> <ul><li>松耦合<br>
+外观模式松散了客户端与子系统的耦合关系，让子系统内部的模块更容易扩展和维护。</li> <li>简单易用<br>
+外观模式让子系统更加易用，客户端不再需要了解子系统内部的实现，只调用外观类就行了，</li> <li>更好的划分访问层次<br>
+通过合理使用Facade，可以帮助我们更好的划分访问层次，有些方法是对系统外的，有些方法是系统内部使用的，把需要暴露给外部的功能集中到外观中，既可以方便客户端使用，也可以很好的隐藏内部细节。</li></ul> <h4 id="缺点"><a href="#缺点" aria-hidden="true" class="header-anchor">#</a> 缺点</h4> <ul><li>过多的或者是不太合理的Facade也容易让人迷惑，不知是调用哪个Facade更合理。</li></ul> <h3 id="相关模式"><a href="#相关模式" aria-hidden="true" class="header-anchor">#</a> 相关模式</h3> <ul><li>外观模式和中介者模式<br>
+中介者模式主要用来封装多个对象之间的相互的交互，多个系统内部的多个模块之间；而外观模式封装的是单向额交互，是从客户端访问系统的调用，没有从系统中来访问客户端的调用。</li></ul> <p>在中介者模式的实现里，是需要实现具体的交互功能的，而而外观模式的实现里面，一般是组合调用或者转调内部的功能，通常外观模式本身并不实现这些功能。</p> <p>中介者模式的主要目的是松散多个模块之间的耦合，把这些耦合关系全部放到中介者中去实现；而外观模式的目的是简化客户端的调用。</p> <ul><li>外观模式和单例模式<br>
+通常一个子系统只需要一个外观实例，所以外观模式可以和单例模式组合使用，把Facade类实现成为单例。</li> <li>外观模式和抽象工厂模式<br>
+外观模式的外观类通常需要和系统内部的多个模块交互，每个模块一般都有自己的接口，所以在外观类的具体实现里面，需要获取这些接口，然后组合这些接口来完成客户端的功能。</li></ul></div> <div class="page-edit"><!----> <!----></div> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/framework/designmode/Builder.html" class="prev">
+          构建者模式
+        </a></span> <span class="next"><a href="/framework/designmode/Adapter.html">
+          适配器模式
+        </a>
+        →
+      </span></p></div> </div> <!----></div></div>
+    <script src="/assets/js/app.b754686d.js" defer></script><script src="/assets/js/25.09c47cf9.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Asm | lizhouwei</title>
+    <meta name="description" content="博学之，审问之，慎思之，眀辨之，笃行之">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
+    
+    <link rel="preload" href="/assets/css/0.styles.3e1d0bd1.css" as="style"><link rel="preload" href="/assets/js/app.b754686d.js" as="script"><link rel="preload" href="/assets/js/34.d381e84e.js" as="script"><link rel="prefetch" href="/assets/js/10.dc6a57bc.js"><link rel="prefetch" href="/assets/js/11.05a7896a.js"><link rel="prefetch" href="/assets/js/12.87f729cc.js"><link rel="prefetch" href="/assets/js/13.b783eb80.js"><link rel="prefetch" href="/assets/js/14.fe15610f.js"><link rel="prefetch" href="/assets/js/15.4d747cf5.js"><link rel="prefetch" href="/assets/js/16.12cc21ce.js"><link rel="prefetch" href="/assets/js/17.87e584b1.js"><link rel="prefetch" href="/assets/js/18.a408f5f0.js"><link rel="prefetch" href="/assets/js/19.e175f669.js"><link rel="prefetch" href="/assets/js/2.81340e14.js"><link rel="prefetch" href="/assets/js/20.c6e6f090.js"><link rel="prefetch" href="/assets/js/21.b92c5565.js"><link rel="prefetch" href="/assets/js/22.eb576cbd.js"><link rel="prefetch" href="/assets/js/23.08a7db77.js"><link rel="prefetch" href="/assets/js/24.d61aae73.js"><link rel="prefetch" href="/assets/js/25.09c47cf9.js"><link rel="prefetch" href="/assets/js/26.116135c4.js"><link rel="prefetch" href="/assets/js/27.d0014973.js"><link rel="prefetch" href="/assets/js/28.9267b2b6.js"><link rel="prefetch" href="/assets/js/29.41694a7d.js"><link rel="prefetch" href="/assets/js/3.df97d12b.js"><link rel="prefetch" href="/assets/js/30.02a18457.js"><link rel="prefetch" href="/assets/js/31.a2736d54.js"><link rel="prefetch" href="/assets/js/32.b6f1a898.js"><link rel="prefetch" href="/assets/js/33.2327629e.js"><link rel="prefetch" href="/assets/js/35.61f98868.js"><link rel="prefetch" href="/assets/js/36.4c841ea5.js"><link rel="prefetch" href="/assets/js/37.681ae4cb.js"><link rel="prefetch" href="/assets/js/38.58a9ee5e.js"><link rel="prefetch" href="/assets/js/39.4b09873b.js"><link rel="prefetch" href="/assets/js/4.283ac3a2.js"><link rel="prefetch" href="/assets/js/40.128c670d.js"><link rel="prefetch" href="/assets/js/41.4e5a175a.js"><link rel="prefetch" href="/assets/js/42.9931eddc.js"><link rel="prefetch" href="/assets/js/43.865cca26.js"><link rel="prefetch" href="/assets/js/44.5755d469.js"><link rel="prefetch" href="/assets/js/45.febddf97.js"><link rel="prefetch" href="/assets/js/46.7562b5b2.js"><link rel="prefetch" href="/assets/js/5.57704351.js"><link rel="prefetch" href="/assets/js/6.955fc97c.js"><link rel="prefetch" href="/assets/js/7.0d473d0c.js"><link rel="prefetch" href="/assets/js/8.156d9fda.js"><link rel="prefetch" href="/assets/js/9.9d034739.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.3e1d0bd1.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">lizhouwei</span></a> <div class="links" style="max-width:nullpx;"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">首页</a></div><div class="nav-item"><a href="/java/" class="nav-link">java语言</a></div><div class="nav-item"><a href="/algorithm/" class="nav-link">数据结构与算法</a></div><div class="nav-item"><a href="/framework/" class="nav-link router-link-active">框架</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">链接</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/lizhouwei" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  github
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li><li class="dropdown-item"><!----> <a href="https://www.cnblogs.com/lizhouwei/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  博客园
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div><div class="nav-item"><a href="/about/" class="nav-link">关于</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">首页</a></div><div class="nav-item"><a href="/java/" class="nav-link">java语言</a></div><div class="nav-item"><a href="/algorithm/" class="nav-link">数据结构与算法</a></div><div class="nav-item"><a href="/framework/" class="nav-link router-link-active">框架</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">链接</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/lizhouwei" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  github
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li><li class="dropdown-item"><!----> <a href="https://www.cnblogs.com/lizhouwei/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  博客园
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div><div class="nav-item"><a href="/about/" class="nav-link">关于</a></div> <!----></nav>  <ul class="sidebar-links"><li><div class="sidebar-group first collapsable"><p class="sidebar-heading"><span>spring</span> <span class="arrow right"></span></p> <!----></div></li><li><div class="sidebar-group collapsable"><p class="sidebar-heading open"><span>spring-core</span> <span class="arrow down"></span></p> <ul class="sidebar-group-items"><li><a href="/framework/springCore/" class="sidebar-link">spring-core 包结构</a></li><li><a href="/framework/springCore/Asm.html" class="active sidebar-link">Asm</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/framework/springCore/Asm.html#概述" class="sidebar-link">概述</a></li><li class="sidebar-sub-header"><a href="/framework/springCore/Asm.html#asm的核心" class="sidebar-link">ASM的核心</a></li><li class="sidebar-sub-header"><a href="/framework/springCore/Asm.html#classreader实现" class="sidebar-link">ClassReader实现</a></li><li class="sidebar-sub-header"><a href="/framework/springCore/Asm.html#classwriter实现" class="sidebar-link">ClassWriter实现</a></li><li class="sidebar-sub-header"><a href="/framework/springCore/Asm.html#参考地址" class="sidebar-link">参考地址</a></li></ul></li><li><a href="/framework/springCore/cglib.html" class="sidebar-link">Cglib</a></li><li><a href="/framework/springCore/Objenesis.html" class="sidebar-link">Objenesis</a></li></ul></div></li><li><div class="sidebar-group collapsable"><p class="sidebar-heading"><span>spring-beans</span> <span class="arrow right"></span></p> <!----></div></li><li><div class="sidebar-group collapsable"><p class="sidebar-heading"><span>spring-aop</span> <span class="arrow right"></span></p> <!----></div></li><li><div class="sidebar-group collapsable"><p class="sidebar-heading"><span>springBoot</span> <span class="arrow right"></span></p> <!----></div></li><li><div class="sidebar-group collapsable"><p class="sidebar-heading"><span>设计模式</span> <span class="arrow right"></span></p> <!----></div></li></ul> </div> <div class="page"> <div class="content"><h1 id="asm"><a href="#asm" aria-hidden="true" class="header-anchor">#</a> Asm</h1> <p><a href="https://wenku.baidu.com/view/bf486c4577232f60ddcca133.html" target="_blank" rel="noopener noreferrer">关于ASM的详细文档<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p> <h2 id="概述"><a href="#概述" aria-hidden="true" class="header-anchor">#</a> 概述</h2> <p>ASM是Java中比较流行的用来读写字节码的类库，用来基于字节码层面对代码进行分析和转换。在读写的过程中可以加入自定义的逻辑以增强或修改原来已编译好的字节码，比如CGLIB用它来实现动态代理。ASM被设计用于在运行时对Java类进行生成和转换，当然也包括离线处理。ASM短小精悍、且速度很快，从而避免在运行时动态生成字节码或转换时对程序速度的影响，又因为它体积小巧，可以在很多内存受限的环境中使用。<br>
+ASM的主要优势包括如下几个方面：</p> <ol><li>它又一个很小，但设计良好并且模块化的API，且易于使用。</li> <li>它具有很好的文档，并且还有eclipse插件。</li> <li>它支持最新的Java版本。</li> <li>它短小精悍、快速、健壮。</li> <li>它又一个很大的用户社区，可以给新用户提供支持。</li> <li>它的开源许可允许你几乎以任何方式来使用它。</li></ol> <h2 id="asm的核心"><a href="#asm的核心" aria-hidden="true" class="header-anchor">#</a> ASM的核心</h2> <p>在ASM的核心实现中，它主要有以下几个类、接口（<strong>在org.objectweb.asm包中</strong>）：</p> <ul><li><p><strong>ClassReader类：</strong> 字节码的读取与分析引擎。它采用类似SAX的事件读取机制，每当有事件发生时，调用注册的ClassVisitor、AnnotationVisitor、FieldVisitor、MethodVisitor做相应的处理。</p></li> <li><p><strong>ClassVisitor接口：</strong> 定义在读取Class字节码时会触发的事件，如类头解析完成、注解解析、字段解析、方法解析等。</p></li> <li><p><strong>AnnotationVisitor接口：</strong> 定义在解析注解时会触发的事件，如解析到一个基本值类型的注解、enum值类型的注解、Array值类型的注解、注解值类型的注解等。</p></li> <li><p><strong>FieldVisitor接口：</strong> 定义在解析字段时触发的事件，如解析到字段上的注解、解析到字段相关的属性等。</p></li> <li><p><strong>MethodVisitor接口：</strong> 定义在解析方法时触发的事件，如方法上的注解、属性、代码等。</p></li> <li><p><strong>ClassWriter类：</strong> 它实现了ClassVisitor接口，用于拼接字节码。</p></li> <li><p><strong>AnnotationWriter类：</strong> 它实现了AnnotationVisitor接口，用于拼接注解相关字节码。</p></li> <li><p><strong>FieldWriter类：</strong> 它实现了FieldVisitor接口，用于拼接字段相关字节码。</p></li> <li><p><strong>MethodWriter类：</strong> 它实现了MethodVisitor接口，用于拼接方法相关字节码。</p></li> <li><p><strong>SignatureReader类：</strong> 对类定义、字段定义、方法定义、本地变量定义的签名的解析。Signature因范型引入，用于存储范型定义时的元数据（因为这些元数据在运行时会被擦除）。</p></li> <li><p><strong>SignatureVisitor接口：</strong> 定义在解析Signature时会触发的事件，如正常的Type参数、类或接口的边界等。</p></li> <li><p><strong>SignatureWriter类：</strong> 它实现了SignatureVisitor接口，用于拼接范型相关字节码。</p></li> <li><p><strong>Attribute类：</strong> 字节码中属性的类抽象。</p></li> <li><p><strong>ByteVector类：</strong> 字节码二进制存储的容器。</p></li> <li><p><strong>Opcodes接口：</strong> 字节码指令的一些常量定义。</p></li> <li><p><strong>Type类：</strong> 类型相关的常量定义以及一些基于其上的操作。</p></li></ul> <h2 id="classreader实现"><a href="#classreader实现" aria-hidden="true" class="header-anchor">#</a> ClassReader实现</h2> <ul><li>ClassReader是ASM中最核心的实现，它用于读取并解析Class字节码，ClassReader构造方法源码如下：</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ClassReader</span> <span class="token punctuation">{</span>
+
+  <span class="token comment">/**
+   * A flag to skip the Code attributes. If this flag is set the Code attributes are neither parsed
+   * nor visited.
+   */</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> SKIP_CODE <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+
+  <span class="token comment">/**
+   * A flag to skip the SourceFile, SourceDebugExtension, LocalVariableTable, LocalVariableTypeTable
+   * and LineNumberTable attributes. If this flag is set these attributes are neither parsed nor
+   * visited (i.e. {@link ClassVisitor#visitSource}, {@link MethodVisitor#visitLocalVariable} and
+   * {@link MethodVisitor#visitLineNumber} are not called).
+   */</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> SKIP_DEBUG <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+
+  <span class="token comment">/**
+   * A flag to skip the StackMap and StackMapTable attributes. If this flag is set these attributes
+   * are neither parsed nor visited (i.e. {@link MethodVisitor#visitFrame} is not called). This flag
+   * is useful when the {@link ClassWriter#COMPUTE_FRAMES} option is used: it avoids visiting frames
+   * that will be ignored and recomputed from scratch.
+   */</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> SKIP_FRAMES <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+
+  <span class="token comment">/**
+   * A flag to expand the stack map frames. By default stack map frames are visited in their
+   * original format (i.e. &quot;expanded&quot; for classes whose version is less than V1_6, and &quot;compressed&quot;
+   * for the other classes). If this flag is set, stack map frames are always visited in expanded
+   * format (this option adds a decompression/compression step in ClassReader and ClassWriter which
+   * degrades performance quite a lot).
+   */</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> EXPAND_FRAMES <span class="token operator">=</span> <span class="token number">8</span><span class="token punctuation">;</span>
+
+  <span class="token comment">/**
+   * A flag to expand the ASM specific instructions into an equivalent sequence of standard bytecode
+   * instructions. When resolving a forward jump it may happen that the signed 2 bytes offset
+   * reserved for it is not sufficient to store the bytecode offset. In this case the jump
+   * instruction is replaced with a temporary ASM specific instruction using an unsigned 2 bytes
+   * offset (see {@link Label#resolve}). This internal flag is used to re-read classes containing
+   * such instructions, in order to replace them with standard instructions. In addition, when this
+   * flag is used, goto_w and jsr_w are &lt;i&gt;not&lt;/i&gt; converted into goto and jsr, to make sure that
+   * infinite loops where a goto_w is replaced with a goto in ClassReader and converted back to a
+   * goto_w in ClassWriter cannot occur.
+   */</span>
+  <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> EXPAND_ASM_INSNS <span class="token operator">=</span> <span class="token number">256</span><span class="token punctuation">;</span>
+
+  <span class="token comment">/** The size of the temporary byte array used to read class input streams chunk by chunk. */</span>
+  <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> INPUT_STREAM_DATA_CHUNK_SIZE <span class="token operator">=</span> <span class="token number">4096</span><span class="token punctuation">;</span>
+
+  <span class="token comment">/**
+   * A byte array containing the JVMS ClassFile structure to be parsed. &lt;i&gt;The content of this array
+   * must not be modified. This field is intended for {@link Attribute} sub classes, and is normally
+   * not needed by class visitors.&lt;/i&gt;
+   *
+   * &lt;p&gt;NOTE: the ClassFile structure can start at any offset within this array, i.e. it does not
+   * necessarily start at offset 0. Use {@link #getItem} and {@link #header} to get correct
+   * ClassFile element offsets within this byte array.
+   */</span>
+  <span class="token comment">// DontCheck(MemberName): can't be renamed (for backward binary compatibility).</span>
+  <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> b<span class="token punctuation">;</span>
+
+  <span class="token comment">/**
+   * The offset in bytes, in {@link #b}, of each cp_info entry of the ClassFile's constant_pool
+   * array, &lt;i&gt;plus one&lt;/i&gt;. In other words, the offset of constant pool entry i is given by
+   * cpInfoOffsets[i] - 1, i.e. its cp_info's tag field is given by b[cpInfoOffsets[i] - 1].
+   */</span>
+  <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> cpInfoOffsets<span class="token punctuation">;</span>
+
+  <span class="token comment">/**
+   * The String objects corresponding to the CONSTANT_Utf8 constant pool items. This cache avoids
+   * multiple parsing of a given CONSTANT_Utf8 constant pool item.
+   */</span>
+  <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> constantUtf8Values<span class="token punctuation">;</span>
+
+  <span class="token comment">/**
+   * The ConstantDynamic objects corresponding to the CONSTANT_Dynamic constant pool items. This
+   * cache avoids multiple parsing of a given CONSTANT_Dynamic constant pool item.
+   */</span>
+  <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">ConstantDynamic</span><span class="token punctuation">[</span><span class="token punctuation">]</span> constantDynamicValues<span class="token punctuation">;</span>
+
+  <span class="token comment">/**
+   * The start offsets in {@link #b} of each element of the bootstrap_methods array (in the
+   * BootstrapMethods attribute).
+   *
+   * @see &lt;a href=&quot;https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.23&quot;&gt;JVMS
+   *     4.7.23&lt;/a&gt;
+   */</span>
+  <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bootstrapMethodOffsets<span class="token punctuation">;</span>
+
+  <span class="token comment">/**
+   * A conservative estimate of the maximum length of the strings contained in the constant pool of
+   * the class.
+   */</span>
+  <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">int</span> maxStringLength<span class="token punctuation">;</span>
+
+  <span class="token comment">/** The offset in bytes, in {@link #b}, of the ClassFile's access_flags field. */</span>
+  <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">int</span> header<span class="token punctuation">;</span>
+
+  <span class="token comment">// -----------------------------------------------------------------------------------------------</span>
+  <span class="token comment">// Constructors</span>
+  <span class="token comment">// -----------------------------------------------------------------------------------------------</span>
+
+  <span class="token comment">/**
+   * Constructs a new {@link ClassReader} object.
+   *
+   * @param classFile the JVMS ClassFile structure to be read.
+   */</span>
+  <span class="token keyword">public</span> <span class="token class-name">ClassReader</span><span class="token punctuation">(</span><span class="token keyword">final</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> classFile<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">(</span>classFile<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> classFile<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">/**
+   * Constructs a new {@link ClassReader} object.
+   *
+   * @param classFileBuffer a byte array containing the JVMS ClassFile structure to be read.
+   * @param classFileOffset the offset in byteBuffer of the first byte of the ClassFile to be read.
+   * @param classFileLength the length in bytes of the ClassFile to be read.
+   */</span>
+  <span class="token keyword">public</span> <span class="token class-name">ClassReader</span><span class="token punctuation">(</span>
+      <span class="token keyword">final</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> classFileBuffer<span class="token punctuation">,</span>
+      <span class="token keyword">final</span> <span class="token keyword">int</span> classFileOffset<span class="token punctuation">,</span>
+      <span class="token keyword">final</span> <span class="token keyword">int</span> classFileLength<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">// NOPMD(UnusedFormalParameter) used for backward compatibility.</span>
+    <span class="token keyword">this</span><span class="token punctuation">(</span>classFileBuffer<span class="token punctuation">,</span> classFileOffset<span class="token punctuation">,</span> <span class="token comment">/* checkClassVersion = */</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">/**
+   * Constructs a new {@link ClassReader} object. &lt;i&gt;This internal constructor must not be exposed
+   * as a public API&lt;/i&gt;.
+   *
+   * @param classFileBuffer a byte array containing the JVMS ClassFile structure to be read.
+   * @param classFileOffset the offset in byteBuffer of the first byte of the ClassFile to be read.
+   * @param checkClassVersion whether to check the class version or not.
+   */</span>
+  <span class="token class-name">ClassReader</span><span class="token punctuation">(</span>
+      <span class="token keyword">final</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> classFileBuffer<span class="token punctuation">,</span> <span class="token keyword">final</span> <span class="token keyword">int</span> classFileOffset<span class="token punctuation">,</span> <span class="token keyword">final</span> <span class="token keyword">boolean</span> checkClassVersion<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    b <span class="token operator">=</span> classFileBuffer<span class="token punctuation">;</span>
+    <span class="token comment">// Check the class' major_version. This field is after the magic and minor_version fields, which</span>
+    <span class="token comment">// use 4 and 2 bytes respectively.</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>checkClassVersion <span class="token operator">&amp;&amp;</span> <span class="token function">readShort</span><span class="token punctuation">(</span>classFileOffset <span class="token operator">+</span> <span class="token number">6</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token class-name">Opcodes</span><span class="token punctuation">.</span>V12<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span>
+          <span class="token string">&quot;Unsupported class file major version &quot;</span> <span class="token operator">+</span> <span class="token function">readShort</span><span class="token punctuation">(</span>classFileOffset <span class="token operator">+</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment">// Create the constant pool arrays. The constant_pool_count field is after the magic,</span>
+    <span class="token comment">// minor_version and major_version fields, which use 4, 2 and 2 bytes respectively.</span>
+    <span class="token keyword">int</span> constantPoolCount <span class="token operator">=</span> <span class="token function">readUnsignedShort</span><span class="token punctuation">(</span>classFileOffset <span class="token operator">+</span> <span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    cpInfoOffsets <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">[</span>constantPoolCount<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    constantUtf8Values <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">[</span>constantPoolCount<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token comment">// Compute the offset of each constant pool entry, as well as a conservative estimate of the</span>
+    <span class="token comment">// maximum length of the constant pool strings. The first constant pool entry is after the</span>
+    <span class="token comment">// magic, minor_version, major_version and constant_pool_count fields, which use 4, 2, 2 and 2</span>
+    <span class="token comment">// bytes respectively.</span>
+    <span class="token keyword">int</span> currentCpInfoIndex <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> currentCpInfoOffset <span class="token operator">=</span> classFileOffset <span class="token operator">+</span> <span class="token number">10</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> currentMaxStringLength <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">boolean</span> hasConstantDynamic <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token keyword">boolean</span> hasConstantInvokeDynamic <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token comment">// The offset of the other entries depend on the total size of all the previous entries.</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>currentCpInfoIndex <span class="token operator">&lt;</span> constantPoolCount<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      cpInfoOffsets<span class="token punctuation">[</span>currentCpInfoIndex<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> currentCpInfoOffset <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+      <span class="token keyword">int</span> cpInfoSize<span class="token punctuation">;</span>
+      <span class="token keyword">switch</span> <span class="token punctuation">(</span>classFileBuffer<span class="token punctuation">[</span>currentCpInfoOffset<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">case</span> <span class="token class-name">Symbol</span><span class="token punctuation">.</span>CONSTANT_FIELDREF_TAG<span class="token operator">:</span>
+        <span class="token keyword">case</span> <span class="token class-name">Symbol</span><span class="token punctuation">.</span>CONSTANT_METHODREF_TAG<span class="token operator">:</span>
+        <span class="token keyword">case</span> <span class="token class-name">Symbol</span><span class="token punctuation">.</span>CONSTANT_INTERFACE_METHODREF_TAG<span class="token operator">:</span>
+        <span class="token keyword">case</span> <span class="token class-name">Symbol</span><span class="token punctuation">.</span>CONSTANT_INTEGER_TAG<span class="token operator">:</span>
+        <span class="token keyword">case</span> <span class="token class-name">Symbol</span><span class="token punctuation">.</span>CONSTANT_FLOAT_TAG<span class="token operator">:</span>
+        <span class="token keyword">case</span> <span class="token class-name">Symbol</span><span class="token punctuation">.</span>CONSTANT_NAME_AND_TYPE_TAG<span class="token operator">:</span>
+          cpInfoSize <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+          <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token keyword">case</span> <span class="token class-name">Symbol</span><span class="token punctuation">.</span>CONSTANT_DYNAMIC_TAG<span class="token operator">:</span>
+          cpInfoSize <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+          hasConstantDynamic <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+          <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token keyword">case</span> <span class="token class-name">Symbol</span><span class="token punctuation">.</span>CONSTANT_INVOKE_DYNAMIC_TAG<span class="token operator">:</span>
+          cpInfoSize <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+          hasConstantInvokeDynamic <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+          <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token keyword">case</span> <span class="token class-name">Symbol</span><span class="token punctuation">.</span>CONSTANT_LONG_TAG<span class="token operator">:</span>
+        <span class="token keyword">case</span> <span class="token class-name">Symbol</span><span class="token punctuation">.</span>CONSTANT_DOUBLE_TAG<span class="token operator">:</span>
+          cpInfoSize <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">;</span>
+          currentCpInfoIndex<span class="token operator">++</span><span class="token punctuation">;</span>
+          <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token keyword">case</span> <span class="token class-name">Symbol</span><span class="token punctuation">.</span>CONSTANT_UTF8_TAG<span class="token operator">:</span>
+          cpInfoSize <span class="token operator">=</span> <span class="token number">3</span> <span class="token operator">+</span> <span class="token function">readUnsignedShort</span><span class="token punctuation">(</span>currentCpInfoOffset <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>cpInfoSize <span class="token operator">&gt;</span> currentMaxStringLength<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// The size in bytes of this CONSTANT_Utf8 structure provides a conservative estimate</span>
+            <span class="token comment">// of the length in characters of the corresponding string, and is much cheaper to</span>
+            <span class="token comment">// compute than this exact length.</span>
+            currentMaxStringLength <span class="token operator">=</span> cpInfoSize<span class="token punctuation">;</span>
+          <span class="token punctuation">}</span>
+          <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token keyword">case</span> <span class="token class-name">Symbol</span><span class="token punctuation">.</span>CONSTANT_METHOD_HANDLE_TAG<span class="token operator">:</span>
+          cpInfoSize <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+          <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token keyword">case</span> <span class="token class-name">Symbol</span><span class="token punctuation">.</span>CONSTANT_CLASS_TAG<span class="token operator">:</span>
+        <span class="token keyword">case</span> <span class="token class-name">Symbol</span><span class="token punctuation">.</span>CONSTANT_STRING_TAG<span class="token operator">:</span>
+        <span class="token keyword">case</span> <span class="token class-name">Symbol</span><span class="token punctuation">.</span>CONSTANT_METHOD_TYPE_TAG<span class="token operator">:</span>
+        <span class="token keyword">case</span> <span class="token class-name">Symbol</span><span class="token punctuation">.</span>CONSTANT_PACKAGE_TAG<span class="token operator">:</span>
+        <span class="token keyword">case</span> <span class="token class-name">Symbol</span><span class="token punctuation">.</span>CONSTANT_MODULE_TAG<span class="token operator">:</span>
+          cpInfoSize <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+          <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token keyword">default</span><span class="token operator">:</span>
+          <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      currentCpInfoOffset <span class="token operator">+=</span> cpInfoSize<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    maxStringLength <span class="token operator">=</span> currentMaxStringLength<span class="token punctuation">;</span>
+    <span class="token comment">// The Classfile's access_flags field is just after the last constant pool entry.</span>
+    header <span class="token operator">=</span> currentCpInfoOffset<span class="token punctuation">;</span>
+
+    <span class="token comment">// Allocate the cache of ConstantDynamic values, if there is at least one.</span>
+    constantDynamicValues <span class="token operator">=</span> hasConstantDynamic <span class="token operator">?</span> <span class="token keyword">new</span> <span class="token class-name">ConstantDynamic</span><span class="token punctuation">[</span>constantPoolCount<span class="token punctuation">]</span> <span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// Read the BootstrapMethods attribute, if any (only get the offset of each method).</span>
+    bootstrapMethodOffsets <span class="token operator">=</span>
+        <span class="token punctuation">(</span>hasConstantDynamic <span class="token operator">|</span> hasConstantInvokeDynamic<span class="token punctuation">)</span>
+            <span class="token operator">?</span> <span class="token function">readBootstrapMethodsAttribute</span><span class="token punctuation">(</span>currentMaxStringLength<span class="token punctuation">)</span>
+            <span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">/**
+   * Constructs a new {@link ClassReader} object.
+   *
+   * @param inputStream an input stream of the JVMS ClassFile structure to be read. This input
+   *     stream must contain nothing more than the ClassFile structure itself. It is read from its
+   *     current position to its end.
+   * @throws IOException if a problem occurs during reading.
+   */</span>
+  <span class="token keyword">public</span> <span class="token class-name">ClassReader</span><span class="token punctuation">(</span><span class="token keyword">final</span> <span class="token class-name">InputStream</span> inputStream<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">(</span><span class="token function">readStream</span><span class="token punctuation">(</span>inputStream<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">/**
+   * Constructs a new {@link ClassReader} object.
+   *
+   * @param className the fully qualified name of the class to be read. The ClassFile structure is
+   *     retrieved with the current class loader's {@link ClassLoader#getSystemResourceAsStream}.
+   * @throws IOException if an exception occurs during reading.
+   */</span>
+  <span class="token keyword">public</span> <span class="token class-name">ClassReader</span><span class="token punctuation">(</span><span class="token keyword">final</span> <span class="token class-name">String</span> className<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">(</span>
+        <span class="token function">readStream</span><span class="token punctuation">(</span>
+            <span class="token class-name">ClassLoader</span><span class="token punctuation">.</span><span class="token function">getSystemResourceAsStream</span><span class="token punctuation">(</span>className<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token string">'.'</span><span class="token punctuation">,</span> <span class="token string">'/'</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">&quot;.class&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">/**
+   * Reads the given input stream and returns its content as a byte array.
+   *
+   * @param inputStream an input stream.
+   * @param close true to close the input stream after reading.
+   * @return the content of the given input stream.
+   * @throws IOException if a problem occurs during reading.
+   */</span>
+  <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">readStream</span><span class="token punctuation">(</span><span class="token keyword">final</span> <span class="token class-name">InputStream</span> inputStream<span class="token punctuation">,</span> <span class="token keyword">final</span> <span class="token keyword">boolean</span> close<span class="token punctuation">)</span>
+      <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>inputStream <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span><span class="token string">&quot;Class not found&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+      <span class="token class-name">ByteArrayOutputStream</span> outputStream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ByteArrayOutputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> data <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">byte</span><span class="token punctuation">[</span>INPUT_STREAM_DATA_CHUNK_SIZE<span class="token punctuation">]</span><span class="token punctuation">;</span>
+      <span class="token keyword">int</span> bytesRead<span class="token punctuation">;</span>
+      <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>bytesRead <span class="token operator">=</span> inputStream<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> data<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        outputStream<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> bytesRead<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      outputStream<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span> outputStream<span class="token punctuation">.</span><span class="token function">toByteArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>close<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        inputStream<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>在构建ClassReader实例时，它首先保存字节码二进制数组b，然后创建items数组，数组的长度在字节码数组的第8、9个字节指定（最前面4个字节是魔数CAFEBABE，之后2个字节是次版本号，再后2个字节是主版本号），每个item表示常量池项在字节码数组的偏移量加1（常量池中每个项由1个字节的type和紧跟的字节数组表示，常量池项有12种类型，其中CONSTANT_FieldRef_Info、CONSTANT_MethodRef_Info、CONSTANT_InterfaceMethodRef_Info、CONSTANT_NameAndType_Info包括其类型字节占用5个字节，另外4个字节每2个字节为字段、方法等所在的类、其名称、描述符在当前常量池中CONSTANT_Utf8_Info类型的引用；CONSTANT_Integer_Info、CONSTANT_Float_Info包括其类型字节占用5个字节，另外四个字节为其对应的值；CONSTANT_Class_Info、CONSTANT_String_Info包括其类型字节占用3个字节，另外两个字节为在当前常量池CONSTANT_Utf8_Info项的索引；CONSTANT_Utf8_Info类型第1个字节表示类型，第2、3个字节为该项所表示的字符串的长度）；CONSTANT_Double_Info、CONSTANT_Long_Info加类型字节为9个字；maxStringLength表示最长的UTF8类型的常量池项的值，用于决定在解析CONSTANT_Utf8_Info类型项时最大需要的字符数组；header表示常量池之后的字节码的第一个字节。</p> <ul><li>ClassReader的accept方法源码</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ClassReader</span> <span class="token punctuation">{</span>
+
+  <span class="token comment">// -----------------------------------------------------------------------------------------------</span>
+  <span class="token comment">// Public methods</span>
+  <span class="token comment">// -----------------------------------------------------------------------------------------------</span>
+
+  <span class="token comment">/**
+   * Makes the given visitor visit the JVMS ClassFile structure passed to the constructor of this
+   * {@link ClassReader}.
+   *
+   * @param classVisitor the visitor that must visit this class.
+   * @param parsingOptions the options to use to parse this class. One or more of {@link
+   *     #SKIP_CODE}, {@link #SKIP_DEBUG}, {@link #SKIP_FRAMES} or {@link #EXPAND_FRAMES}.
+   */</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">accept</span><span class="token punctuation">(</span><span class="token keyword">final</span> <span class="token class-name">ClassVisitor</span> classVisitor<span class="token punctuation">,</span> <span class="token keyword">final</span> <span class="token keyword">int</span> parsingOptions<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">accept</span><span class="token punctuation">(</span>classVisitor<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Attribute</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> parsingOptions<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">/**
+   * Makes the given visitor visit the JVMS ClassFile structure passed to the constructor of this
+   * {@link ClassReader}.
+   *
+   * @param classVisitor the visitor that must visit this class.
+   * @param attributePrototypes prototypes of the attributes that must be parsed during the visit of
+   *     the class. Any attribute whose type is not equal to the type of one the prototypes will not
+   *     be parsed: its byte array value will be passed unchanged to the ClassWriter. &lt;i&gt;This may
+   *     corrupt it if this value contains references to the constant pool, or has syntactic or
+   *     semantic links with a class element that has been transformed by a class adapter between
+   *     the reader and the writer&lt;/i&gt;.
+   * @param parsingOptions the options to use to parse this class. One or more of {@link
+   *     #SKIP_CODE}, {@link #SKIP_DEBUG}, {@link #SKIP_FRAMES} or {@link #EXPAND_FRAMES}.
+   */</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">accept</span><span class="token punctuation">(</span>
+      <span class="token keyword">final</span> <span class="token class-name">ClassVisitor</span> classVisitor<span class="token punctuation">,</span>
+      <span class="token keyword">final</span> <span class="token class-name">Attribute</span><span class="token punctuation">[</span><span class="token punctuation">]</span> attributePrototypes<span class="token punctuation">,</span>
+      <span class="token keyword">final</span> <span class="token keyword">int</span> parsingOptions<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token class-name">Context</span> context <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Context</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    context<span class="token punctuation">.</span>attributePrototypes <span class="token operator">=</span> attributePrototypes<span class="token punctuation">;</span>
+    context<span class="token punctuation">.</span>parsingOptions <span class="token operator">=</span> parsingOptions<span class="token punctuation">;</span>
+    context<span class="token punctuation">.</span>charBuffer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">char</span><span class="token punctuation">[</span>maxStringLength<span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// Read the access_flags, this_class, super_class, interface_count and interfaces fields.</span>
+    <span class="token keyword">char</span><span class="token punctuation">[</span><span class="token punctuation">]</span> charBuffer <span class="token operator">=</span> context<span class="token punctuation">.</span>charBuffer<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> currentOffset <span class="token operator">=</span> header<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> accessFlags <span class="token operator">=</span> <span class="token function">readUnsignedShort</span><span class="token punctuation">(</span>currentOffset<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">String</span> thisClass <span class="token operator">=</span> <span class="token function">readClass</span><span class="token punctuation">(</span>currentOffset <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">,</span> charBuffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">String</span> superClass <span class="token operator">=</span> <span class="token function">readClass</span><span class="token punctuation">(</span>currentOffset <span class="token operator">+</span> <span class="token number">4</span><span class="token punctuation">,</span> charBuffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> interfaces <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token function">readUnsignedShort</span><span class="token punctuation">(</span>currentOffset <span class="token operator">+</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    currentOffset <span class="token operator">+=</span> <span class="token number">8</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> interfaces<span class="token punctuation">.</span>length<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      interfaces<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">readClass</span><span class="token punctuation">(</span>currentOffset<span class="token punctuation">,</span> charBuffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      currentOffset <span class="token operator">+=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// Read the class attributes (the variables are ordered as in Section 4.7 of the JVMS).</span>
+    <span class="token comment">// Attribute offsets exclude the attribute_name_index and attribute_length fields.</span>
+    <span class="token comment">// - The offset of the InnerClasses attribute, or 0.</span>
+    <span class="token keyword">int</span> innerClassesOffset <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token comment">// - The offset of the EnclosingMethod attribute, or 0.</span>
+    <span class="token keyword">int</span> enclosingMethodOffset <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token comment">// - The string corresponding to the Signature attribute, or null.</span>
+    <span class="token class-name">String</span> signature <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token comment">// - The string corresponding to the SourceFile attribute, or null.</span>
+    <span class="token class-name">String</span> sourceFile <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token comment">// - The string corresponding to the SourceDebugExtension attribute, or null.</span>
+    <span class="token class-name">String</span> sourceDebugExtension <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token comment">// - The offset of the RuntimeVisibleAnnotations attribute, or 0.</span>
+    <span class="token keyword">int</span> runtimeVisibleAnnotationsOffset <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token comment">// - The offset of the RuntimeInvisibleAnnotations attribute, or 0.</span>
+    <span class="token keyword">int</span> runtimeInvisibleAnnotationsOffset <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token comment">// - The offset of the RuntimeVisibleTypeAnnotations attribute, or 0.</span>
+    <span class="token keyword">int</span> runtimeVisibleTypeAnnotationsOffset <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token comment">// - The offset of the RuntimeInvisibleTypeAnnotations attribute, or 0.</span>
+    <span class="token keyword">int</span> runtimeInvisibleTypeAnnotationsOffset <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token comment">// - The offset of the Module attribute, or 0.</span>
+    <span class="token keyword">int</span> moduleOffset <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token comment">// - The offset of the ModulePackages attribute, or 0.</span>
+    <span class="token keyword">int</span> modulePackagesOffset <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token comment">// - The string corresponding to the ModuleMainClass attribute, or null.</span>
+    <span class="token class-name">String</span> moduleMainClass <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token comment">// - The string corresponding to the NestHost attribute, or null.</span>
+    <span class="token class-name">String</span> nestHostClass <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token comment">// - The offset of the NestMembers attribute, or 0.</span>
+    <span class="token keyword">int</span> nestMembersOffset <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token comment">// - The non standard attributes (linked with their {@link Attribute#nextAttribute} field).</span>
+    <span class="token comment">//   This list in the &lt;i&gt;reverse order&lt;/i&gt; or their order in the ClassFile structure.</span>
+    <span class="token class-name">Attribute</span> attributes <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">int</span> currentAttributeOffset <span class="token operator">=</span> <span class="token function">getFirstAttributeOffset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token function">readUnsignedShort</span><span class="token punctuation">(</span>currentAttributeOffset <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">--</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">// Read the attribute_info's attribute_name and attribute_length fields.</span>
+      <span class="token class-name">String</span> attributeName <span class="token operator">=</span> <span class="token function">readUTF8</span><span class="token punctuation">(</span>currentAttributeOffset<span class="token punctuation">,</span> charBuffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">int</span> attributeLength <span class="token operator">=</span> <span class="token function">readInt</span><span class="token punctuation">(</span>currentAttributeOffset <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      currentAttributeOffset <span class="token operator">+=</span> <span class="token number">6</span><span class="token punctuation">;</span>
+      <span class="token comment">// The tests are sorted in decreasing frequency order (based on frequencies observed on</span>
+      <span class="token comment">// typical classes).</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Constants</span><span class="token punctuation">.</span>SOURCE_FILE<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>attributeName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        sourceFile <span class="token operator">=</span> <span class="token function">readUTF8</span><span class="token punctuation">(</span>currentAttributeOffset<span class="token punctuation">,</span> charBuffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Constants</span><span class="token punctuation">.</span>INNER_CLASSES<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>attributeName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        innerClassesOffset <span class="token operator">=</span> currentAttributeOffset<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Constants</span><span class="token punctuation">.</span>ENCLOSING_METHOD<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>attributeName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        enclosingMethodOffset <span class="token operator">=</span> currentAttributeOffset<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Constants</span><span class="token punctuation">.</span>NEST_HOST<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>attributeName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        nestHostClass <span class="token operator">=</span> <span class="token function">readClass</span><span class="token punctuation">(</span>currentAttributeOffset<span class="token punctuation">,</span> charBuffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Constants</span><span class="token punctuation">.</span>NEST_MEMBERS<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>attributeName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        nestMembersOffset <span class="token operator">=</span> currentAttributeOffset<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Constants</span><span class="token punctuation">.</span>SIGNATURE<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>attributeName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        signature <span class="token operator">=</span> <span class="token function">readUTF8</span><span class="token punctuation">(</span>currentAttributeOffset<span class="token punctuation">,</span> charBuffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Constants</span><span class="token punctuation">.</span>RUNTIME_VISIBLE_ANNOTATIONS<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>attributeName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        runtimeVisibleAnnotationsOffset <span class="token operator">=</span> currentAttributeOffset<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Constants</span><span class="token punctuation">.</span>RUNTIME_VISIBLE_TYPE_ANNOTATIONS<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>attributeName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        runtimeVisibleTypeAnnotationsOffset <span class="token operator">=</span> currentAttributeOffset<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Constants</span><span class="token punctuation">.</span>DEPRECATED<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>attributeName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        accessFlags <span class="token operator">|=</span> <span class="token class-name">Opcodes</span><span class="token punctuation">.</span>ACC_DEPRECATED<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Constants</span><span class="token punctuation">.</span>SYNTHETIC<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>attributeName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        accessFlags <span class="token operator">|=</span> <span class="token class-name">Opcodes</span><span class="token punctuation">.</span>ACC_SYNTHETIC<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Constants</span><span class="token punctuation">.</span>SOURCE_DEBUG_EXTENSION<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>attributeName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        sourceDebugExtension <span class="token operator">=</span>
+            <span class="token function">readUtf</span><span class="token punctuation">(</span>currentAttributeOffset<span class="token punctuation">,</span> attributeLength<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token keyword">char</span><span class="token punctuation">[</span>attributeLength<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Constants</span><span class="token punctuation">.</span>RUNTIME_INVISIBLE_ANNOTATIONS<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>attributeName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        runtimeInvisibleAnnotationsOffset <span class="token operator">=</span> currentAttributeOffset<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Constants</span><span class="token punctuation">.</span>RUNTIME_INVISIBLE_TYPE_ANNOTATIONS<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>attributeName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        runtimeInvisibleTypeAnnotationsOffset <span class="token operator">=</span> currentAttributeOffset<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Constants</span><span class="token punctuation">.</span>MODULE<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>attributeName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        moduleOffset <span class="token operator">=</span> currentAttributeOffset<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Constants</span><span class="token punctuation">.</span>MODULE_MAIN_CLASS<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>attributeName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        moduleMainClass <span class="token operator">=</span> <span class="token function">readClass</span><span class="token punctuation">(</span>currentAttributeOffset<span class="token punctuation">,</span> charBuffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Constants</span><span class="token punctuation">.</span>MODULE_PACKAGES<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>attributeName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        modulePackagesOffset <span class="token operator">=</span> currentAttributeOffset<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token class-name">Constants</span><span class="token punctuation">.</span>BOOTSTRAP_METHODS<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>attributeName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// The BootstrapMethods attribute is read in the constructor.</span>
+        <span class="token class-name">Attribute</span> attribute <span class="token operator">=</span>
+            <span class="token function">readAttribute</span><span class="token punctuation">(</span>
+                attributePrototypes<span class="token punctuation">,</span>
+                attributeName<span class="token punctuation">,</span>
+                currentAttributeOffset<span class="token punctuation">,</span>
+                attributeLength<span class="token punctuation">,</span>
+                charBuffer<span class="token punctuation">,</span>
+                <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span>
+                <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        attribute<span class="token punctuation">.</span>nextAttribute <span class="token operator">=</span> attributes<span class="token punctuation">;</span>
+        attributes <span class="token operator">=</span> attribute<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      currentAttributeOffset <span class="token operator">+=</span> attributeLength<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>在调用ClassReader的accept方法时，它解析字节码中常量池之后的所有元素。紧接着常量池的2个字节是该类的access标签：ACC_PUBLIC、ACC_FINAL等；之后2个字节为当前类名在常量池CONSTANT_Utf8_Info类型的索引；之后2个字节为其父类名在常量池CONSTANT_Utf8_Info类型的索引（索引值0表示父类为null，即直接继承自Object类）；再之后为其实现的接口数长度和对应各个接口名在常量池中CONSTANT_Utf8_Info类型的索引值；暂时先跳过Field和Method定义信息，解析类的attribute表，它用两个字节表达attribute数组的长度，每个attribute项中最前面2个字节是attribute名称：SourceFile（读取sourceFile值）、InnerClasses（暂时纪录起始索引）、EnclosingMethod（纪录当前匿名类、本地类包含者类名以及包含者的方法名和描述符）、Signature（类的签名信息，用于范型）、RuntimeVisibleAnnotations（暂时纪录起始索引）、Deprecated（表识属性）、Synthetic（标识属性）、SourceDebugExtension（为调试器提供的自定义扩展信息，读取成一个字符串）、RuntimeInvisibleAnnotations（暂时纪录起始索引），对其他不识别的属性，纪录成Attribute链，如果attribute名称符合在accept中attribute数组中指定的attribute名，则替换传入的attribute数组对应的项；根据解析出来的信息调用以下visit方法：</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">void</span> <span class="token function">visit</span><span class="token punctuation">(</span><span class="token keyword">int</span> version<span class="token punctuation">,</span> <span class="token keyword">int</span> access<span class="token punctuation">,</span> <span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">String</span> signature<span class="token punctuation">,</span> <span class="token class-name">String</span> superName<span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> interfaces<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// sourceFile, sourceDebug</span>
+<span class="token keyword">void</span> <span class="token function">visitSource</span><span class="token punctuation">(</span><span class="token class-name">String</span> source<span class="token punctuation">,</span> <span class="token class-name">String</span> debug<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// EnclosingMethod attribute: enclosingOwner, enclosingName, enclosingDesc. </span>
+<span class="token comment">// Note: only when the class has EnclosingMethod attribute, meaning the class is a local class or an anonymous class</span>
+<span class="token keyword">void</span> <span class="token function">visitOuterClass</span><span class="token punctuation">(</span><span class="token class-name">String</span> owner<span class="token punctuation">,</span> <span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">String</span> desc<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><p>依次解析RuntimeVisibleAnnotations和RuntimeInvisibleAnnotations属性，首先解析定义的Annotation的描述符以及运行时可见flag，返回用户自定义的AnnotationVisitor：</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token class-name">AnnotationVisitor</span> <span class="token function">visitAnnotation</span><span class="token punctuation">(</span><span class="token class-name">String</span> desc<span class="token punctuation">,</span> <span class="token keyword">boolean</span> visible<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><p>对每个定义的Annotation，解析其键值对，并根据不同的Annotation字段值调用AnnotationVisitor中的方法，在所有解析结束后，调用AnnotationVisitor.visitEnd方法：</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">AnnotationVisitor</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 对基本类型的数组，依然采用该方法，visitArray只是在非基本类型时调用。</span>
+    <span class="token keyword">void</span> <span class="token function">visit</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">Object</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">void</span> <span class="token function">visitEnum</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">String</span> desc<span class="token punctuation">,</span> <span class="token class-name">String</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">AnnotationVisitor</span> <span class="token function">visitAnnotation</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">String</span> desc<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">AnnotationVisitor</span> <span class="token function">visitArray</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">void</span> <span class="token function">visitEnd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>之前解析出的attribute链表（非标准的Attribute定义），对每个Attribute实例，调用ClassVisitor中的visitAttribute方法：<br>
+void visitAttribute(Attribute attr);<br>
+Attribute类包含type字段和一个字节数组：</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Attribute</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token class-name">String</span> type<span class="token punctuation">;</span>
+    <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> value<span class="token punctuation">;</span>
+    <span class="token class-name">Attribute</span> next<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>对每个InnerClasses属性，解析并调用ClassVisitor的visitInnerClass方法（该属性事实上保存了所有其直接内部类以及它本身到最顶层类的路径）：</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">void</span> <span class="token function">visitInnerClass</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">String</span> outerName<span class="token punctuation">,</span> <span class="token class-name">String</span> innerName<span class="token punctuation">,</span> <span class="token keyword">int</span> access<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><p>解析字段，它紧跟接口数组定义之后，最前面的2个字节为字段数组的长度，对每个字段，前面2个字节为访问flag定义，再后2个字节为Name索引，以及2个字节的描述符索引，然后解析其Attribute信息：ConstantValue、Signature、Deprecated、Synthetic、RuntimeVisibleAnnotations、RuntimeInvisibleAnnotations以及非标准定义的Attribute链，而后调用ClassVisitor的visitField方法，返回FieldVisitor实例：</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token comment">// 其中value为静态字段的初始化值（对非静态字段，它的初始化必须由构造函数实现），如果没有初始化值，该值为null。</span>
+<span class="token class-name">FieldVisitor</span> <span class="token function">visitField</span><span class="token punctuation">(</span><span class="token keyword">int</span> access<span class="token punctuation">,</span> <span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">String</span> desc<span class="token punctuation">,</span> <span class="token class-name">String</span> signature<span class="token punctuation">,</span> <span class="token class-name">Object</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><p>对返回的FieldVisitor依次对其Annotation以及非标准Attribute解析，调用其visit方法，并在完成后调用它的visitEnd方法：</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">FieldVisitor</span> <span class="token punctuation">{</span>
+    <span class="token class-name">AnnotationVisitor</span> <span class="token function">visitAnnotation</span><span class="token punctuation">(</span><span class="token class-name">String</span> desc<span class="token punctuation">,</span> <span class="token keyword">boolean</span> visible<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">void</span> <span class="token function">visitAttribute</span><span class="token punctuation">(</span><span class="token class-name">Attribute</span> attr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">void</span> <span class="token function">visitEnd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>解析方法定义，它紧跟字段定义之后，最前面的2个字节为方法数组长度，对每个方法，前面2个字节为访问flag定义，再后2个字节为Name索引，以及2个字节的方法描述符索引，然后解析其Attribute信息：Code、Exceptions、Signature、Deprecated、RuntimeVisibleAnnotations、AnnotationDefault、Synthetic、RuntimeInvisibleAnnotations、RuntimeVisibleParameterAnnotations、RuntimeInvisibleParameterAnnotations以及非标准定义的Attribute链，如果存在Exceptions属性，解析其异常类数组，之后调用ClassVisitor的visitMethod方法，返回MethodVisitor实例：</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token class-name">MethodVisitor</span> <span class="token function">visitMethod</span><span class="token punctuation">(</span><span class="token keyword">int</span> access<span class="token punctuation">,</span> <span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">String</span> desc<span class="token punctuation">,</span> <span class="token class-name">String</span> signature<span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> exceptions<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><p>AnnotationDefault为对Annotation定义时指定默认值的解析；然后依次解析RuntimeVisibleAnnotations、RuntimeInvisibleAnnotations、RuntimeVisibleParameterAnnotations、RuntimeInvisibleParameterAnnotations等属性，调用相关AnnotationVisitor的visit方法；对非标准定义的Attribute链，依次调用MethodVisitor的visitAttribute方法：</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">MethodVisitor</span> <span class="token punctuation">{</span>
+    <span class="token class-name">AnnotationVisitor</span> <span class="token function">visitAnnotationDefault</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">AnnotationVisitor</span> <span class="token function">visitAnnotation</span><span class="token punctuation">(</span><span class="token class-name">String</span> desc<span class="token punctuation">,</span> <span class="token keyword">boolean</span> visible<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">AnnotationVisitor</span> <span class="token function">visitParameterAnnotation</span><span class="token punctuation">(</span><span class="token keyword">int</span> parameter<span class="token punctuation">,</span> <span class="token class-name">String</span> desc<span class="token punctuation">,</span> <span class="token keyword">boolean</span> visible<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">void</span> <span class="token function">visitAttribute</span><span class="token punctuation">(</span><span class="token class-name">Attribute</span> attr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>对Code属性解析，读取2个字节的最深栈大小、最大local变量数、code占用字节数，调用MethodVisitor的visitCode()方法表示开始解析Code属性，对每条指令，创建一个Label实例并构成Label数组，解析Code属性中的异常表，对每个异常项，调用visitTryCatchBlock方法：</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">void</span> <span class="token function">visitTryCatchBlock</span><span class="token punctuation">(</span><span class="token class-name">Label</span> start<span class="token punctuation">,</span> <span class="token class-name">Label</span> end<span class="token punctuation">,</span> <span class="token class-name">Label</span> handler<span class="token punctuation">,</span> <span class="token class-name">String</span> type<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><p>Label包含以下信息：</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token comment">/**
+ * A label represents a position in the bytecode of a method. Labels are used
+ * for jump, goto, and switch instructions, and for try catch blocks.
+ * 
+ * @author Eric Bruneton
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Label</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token class-name">Object</span> info<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> status<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> line<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> position<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> referenceCount<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> srcAndRefPositions<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> inputStackTop<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> outputStackMax<span class="token punctuation">;</span>
+    <span class="token class-name">Frame</span> frame<span class="token punctuation">;</span>
+    <span class="token class-name">Label</span> successor<span class="token punctuation">;</span>
+    <span class="token class-name">Edge</span> successors<span class="token punctuation">;</span>
+    <span class="token class-name">Label</span> next<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>解析Code属性中的内部属性信息：LocalVariableTable、LocalVariableTypeTable、LineNumberTable、StackMapTable、StackMap以及非标准定义的Attribute链，对每个Label调用其visitLineNumber方法以及对每个Frame调用visitFrame方法，并且对相应的指令调用相应的方法：</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">void</span> <span class="token function">visitFrame</span><span class="token punctuation">(</span><span class="token keyword">int</span> type<span class="token punctuation">,</span> <span class="token keyword">int</span> nLocal<span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">[</span><span class="token punctuation">]</span> local<span class="token punctuation">,</span> <span class="token keyword">int</span> nStack<span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">[</span><span class="token punctuation">]</span> stack<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Visits a zero operand instruction.</span>
+<span class="token keyword">void</span> <span class="token function">visitInsn</span><span class="token punctuation">(</span><span class="token keyword">int</span> opcode<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Visits an instruction with a single int operand.</span>
+<span class="token keyword">void</span> <span class="token function">visitIntInsn</span><span class="token punctuation">(</span><span class="token keyword">int</span> opcode<span class="token punctuation">,</span> <span class="token keyword">int</span> operand<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Visits a local variable instruction. A local variable instruction is an instruction that loads or stores the value of a local variable.</span>
+<span class="token keyword">void</span> <span class="token function">visitVarInsn</span><span class="token punctuation">(</span><span class="token keyword">int</span> opcode<span class="token punctuation">,</span> <span class="token keyword">int</span> <span class="token keyword">var</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Visits a type instruction. A type instruction is an instruction that takes the internal name of a class as parameter.</span>
+<span class="token keyword">void</span> <span class="token function">visitTypeInsn</span><span class="token punctuation">(</span><span class="token keyword">int</span> opcode<span class="token punctuation">,</span> <span class="token class-name">String</span> type<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Visits a field instruction. A field instruction is an instruction that loads or stores the value of a field of an object.</span>
+<span class="token keyword">void</span> <span class="token function">visitFieldInsn</span><span class="token punctuation">(</span><span class="token keyword">int</span> opcode<span class="token punctuation">,</span> <span class="token class-name">String</span> owner<span class="token punctuation">,</span> <span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">String</span> desc<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Visits a method instruction. A method instruction is an instruction that invokes a method.</span>
+<span class="token keyword">void</span> <span class="token function">visitMethodInsn</span><span class="token punctuation">(</span><span class="token keyword">int</span> opcode<span class="token punctuation">,</span> <span class="token class-name">String</span> owner<span class="token punctuation">,</span> <span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">String</span> desc<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Visits a jump instruction. A jump instruction is an instruction that may jump to another instruction.</span>
+<span class="token keyword">void</span> <span class="token function">visitJumpInsn</span><span class="token punctuation">(</span><span class="token keyword">int</span> opcode<span class="token punctuation">,</span> <span class="token class-name">Label</span> label<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Visits a label. A label designates the instruction that will be visited just after it.</span>
+<span class="token keyword">void</span> <span class="token function">visitLabel</span><span class="token punctuation">(</span><span class="token class-name">Label</span> label<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Visits a LDC instruction.</span>
+<span class="token keyword">void</span> <span class="token function">visitLdcInsn</span><span class="token punctuation">(</span><span class="token class-name">Object</span> cst<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Visits an IINC instruction.</span>
+<span class="token keyword">void</span> <span class="token function">visitIincInsn</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token keyword">var</span><span class="token punctuation">,</span> <span class="token keyword">int</span> increment<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Visits a TABLESWITCH instruction.</span>
+<span class="token keyword">void</span> <span class="token function">visitTableSwitchInsn</span><span class="token punctuation">(</span><span class="token keyword">int</span> min<span class="token punctuation">,</span> <span class="token keyword">int</span> max<span class="token punctuation">,</span> <span class="token class-name">Label</span> dflt<span class="token punctuation">,</span> <span class="token class-name">Label</span><span class="token punctuation">[</span><span class="token punctuation">]</span> labels<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Visits a LOOKUPSWITCH instruction.</span>
+<span class="token keyword">void</span> <span class="token function">visitLookupSwitchInsn</span><span class="token punctuation">(</span><span class="token class-name">Label</span> dflt<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> keys<span class="token punctuation">,</span> <span class="token class-name">Label</span><span class="token punctuation">[</span><span class="token punctuation">]</span> labels<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Visits a MULTIANEWARRAY instruction.</span>
+<span class="token keyword">void</span> <span class="token function">visitMultiANewArrayInsn</span><span class="token punctuation">(</span><span class="token class-name">String</span> desc<span class="token punctuation">,</span> <span class="token keyword">int</span> dims<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Visits a try catch block.</span>
+<span class="token keyword">void</span> <span class="token function">visitTryCatchBlock</span><span class="token punctuation">(</span><span class="token class-name">Label</span> start<span class="token punctuation">,</span> <span class="token class-name">Label</span> end<span class="token punctuation">,</span> <span class="token class-name">Label</span> handler<span class="token punctuation">,</span> <span class="token class-name">String</span> type<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">visitLocalVariable</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">String</span> desc<span class="token punctuation">,</span> <span class="token class-name">String</span> signature<span class="token punctuation">,</span> <span class="token class-name">Label</span> start<span class="token punctuation">,</span> <span class="token class-name">Label</span> end<span class="token punctuation">,</span> <span class="token keyword">int</span> index<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Visits a line number declaration.</span>
+<span class="token keyword">void</span> <span class="token function">visitLineNumber</span><span class="token punctuation">(</span><span class="token keyword">int</span> line<span class="token punctuation">,</span> <span class="token class-name">Label</span> start<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Visits the maximum stack size and the maximum number of local variables of the method.</span>
+<span class="token keyword">void</span> <span class="token function">visitMaxs</span><span class="token punctuation">(</span><span class="token keyword">int</span> maxStack<span class="token punctuation">,</span> <span class="token keyword">int</span> maxLocals<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><p>最后调用ClassVisitor的visitEnd方法：</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">void</span> <span class="token function">visitEnd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><h2 id="classwriter实现"><a href="#classwriter实现" aria-hidden="true" class="header-anchor">#</a> ClassWriter实现</h2> <p>ClassWriter继承自ClassVisitor接口，可以使用它调用其相应的visit方法动态的构造一个字节码类。它包含以下字段信息：</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ClassWriter</span> <span class="token keyword">implements</span> <span class="token class-name">ClassVisitor</span> <span class="token punctuation">{</span>
+    <span class="token comment">//The class reader from which this class writer was constructed, if any.</span>
+    <span class="token class-name">ClassReader</span> cr<span class="token punctuation">;</span>
+    <span class="token comment">//Minor and major version numbers of the class to be generated.</span>
+    <span class="token keyword">int</span> version<span class="token punctuation">;</span>
+    <span class="token comment">//Index of the next item to be added in the constant pool.</span>
+    <span class="token keyword">int</span> index<span class="token punctuation">;</span>
+    <span class="token comment">//The constant pool of this class.</span>
+    <span class="token keyword">final</span> <span class="token class-name">ByteVector</span> pool<span class="token punctuation">;</span>
+    <span class="token comment">//The constant pool's hash table data.</span>
+    <span class="token class-name">Item</span><span class="token punctuation">[</span><span class="token punctuation">]</span> items<span class="token punctuation">;</span>
+    <span class="token comment">//The threshold of the constant pool's hash table.</span>
+    <span class="token keyword">int</span> threshold<span class="token punctuation">;</span>
+    <span class="token comment">//A reusable key used to look for items in the {@link #items} hash table.</span>
+    <span class="token keyword">final</span> <span class="token class-name">Item</span> key<span class="token punctuation">;</span>
+    <span class="token comment">//A reusable key used to look for items in the {@link #items} hash table.</span>
+    <span class="token keyword">final</span> <span class="token class-name">Item</span> key2<span class="token punctuation">;</span>
+    <span class="token comment">//A reusable key used to look for items in the {@link #items} hash table.</span>
+    <span class="token keyword">final</span> <span class="token class-name">Item</span> key3<span class="token punctuation">;</span>
+    <span class="token comment">//A type table used to temporarily store internal names that will not necessarily be stored in the constant pool. </span>
+    <span class="token class-name">Item</span><span class="token punctuation">[</span><span class="token punctuation">]</span> typeTable<span class="token punctuation">;</span>
+    <span class="token comment">//Number of elements in the {@link #typeTable} array.</span>
+    <span class="token keyword">private</span> <span class="token keyword">short</span> typeCount<span class="token punctuation">;</span>
+    <span class="token comment">//The access flags of this class.</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> access<span class="token punctuation">;</span>
+    <span class="token comment">//The constant pool item that contains the internal name of this class.</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> name<span class="token punctuation">;</span>
+    <span class="token comment">//The internal name of this class.</span>
+    <span class="token class-name">String</span> thisName<span class="token punctuation">;</span>
+    <span class="token comment">//The constant pool item that contains the signature of this class.</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> signature<span class="token punctuation">;</span>
+    <span class="token comment">//The constant pool item that contains the internal name of the super class of this class.</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> superName<span class="token punctuation">;</span>
+    <span class="token comment">// Number of interfaces implemented or extended by this class or interface.</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> interfaceCount<span class="token punctuation">;</span>
+    <span class="token comment">//The interfaces implemented or extended by this class or interface. </span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> interfaces<span class="token punctuation">;</span>
+    <span class="token comment">//The index of the constant pool item that contains the name of the source file from which this class was compiled.</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> sourceFile<span class="token punctuation">;</span>
+    <span class="token comment">//The SourceDebug attribute of this class.</span>
+    <span class="token keyword">private</span> <span class="token class-name">ByteVector</span> sourceDebug<span class="token punctuation">;</span>
+    <span class="token comment">//The constant pool item that contains the name of the enclosing class of this class.</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> enclosingMethodOwner<span class="token punctuation">;</span>
+    <span class="token comment">//The constant pool item that contains the name and descriptor of the enclosing method of this class.</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> enclosingMethod<span class="token punctuation">;</span>
+    <span class="token comment">//The runtime visible annotations of this class.</span>
+    <span class="token keyword">private</span> <span class="token class-name">AnnotationWriter</span> anns<span class="token punctuation">;</span>
+    <span class="token comment">//The runtime invisible annotations of this class.</span>
+    <span class="token keyword">private</span> <span class="token class-name">AnnotationWriter</span> ianns<span class="token punctuation">;</span>
+    <span class="token comment">//The non standard attributes of this class.</span>
+    <span class="token keyword">private</span> <span class="token class-name">Attribute</span> attrs<span class="token punctuation">;</span>
+    <span class="token comment">//The number of entries in the InnerClasses attribute.</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> innerClassesCount<span class="token punctuation">;</span>
+    <span class="token comment">//The InnerClasses attribute.</span>
+    <span class="token keyword">private</span> <span class="token class-name">ByteVector</span> innerClasses<span class="token punctuation">;</span>
+    <span class="token comment">//The fields of this class. These fields are stored in a linked list of {@link FieldWriter} objects, linked to each other by their {@link FieldWriter#next} field. This field stores the first element of this list.</span>
+    <span class="token class-name">FieldWriter</span> firstField<span class="token punctuation">;</span>
+    <span class="token comment">//This field stores the last element of this list.</span>
+    <span class="token class-name">FieldWriter</span> lastField<span class="token punctuation">;</span>
+    <span class="token comment">//The methods of this class. These methods are stored in a linked list of {@link MethodWriter} objects, linked to each other by their {@link MethodWriter#next} field. This field stores the first element of this list.</span>
+    <span class="token class-name">MethodWriter</span> firstMethod<span class="token punctuation">;</span>
+    <span class="token comment">//This field stores the last element of this list.</span>
+    <span class="token class-name">MethodWriter</span> lastMethod<span class="token punctuation">;</span>
+    <span class="token comment">//true if the maximum stack size and number of local variables must be automatically computed.</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">boolean</span> computeMaxs<span class="token punctuation">;</span>
+    <span class="token comment">//true if the stack map frames must be recomputed from scratch.</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">boolean</span> computeFrames<span class="token punctuation">;</span>
+   <span class="token comment">//true if the stack map tables of this class are invalid. </span>
+    <span class="token keyword">boolean</span> invalidFrames<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="参考地址"><a href="#参考地址" aria-hidden="true" class="header-anchor">#</a> 参考地址</h2> <p><a href="http://www.blogjava.net/DLevin/archive/2014/06/25/414292.html" target="_blank" rel="noopener noreferrer">深入ASM源码之ClassReader、ClassVisitor、ClassWriter<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p></div> <div class="page-edit"><!----> <!----></div> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/framework/springCore/" class="prev router-link-active">
+          spring-core 包结构
+        </a></span> <span class="next"><a href="/framework/springCore/cglib.html">
+          Cglib
+        </a>
+        →
+      </span></p></div> </div> <!----></div></div>
+    <script src="/assets/js/app.b754686d.js" defer></script><script src="/assets/js/34.d381e84e.js" defer></script>
+  </body>
+</html>

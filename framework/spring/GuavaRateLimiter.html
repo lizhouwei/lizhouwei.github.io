@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>RateLimiter源码 | lizhouwei</title>
+    <meta name="description" content="博学之，审问之，慎思之，眀辨之，笃行之">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
+    
+    <link rel="preload" href="/assets/css/0.styles.3e1d0bd1.css" as="style"><link rel="preload" href="/assets/js/app.b754686d.js" as="script"><link rel="preload" href="/assets/js/38.58a9ee5e.js" as="script"><link rel="prefetch" href="/assets/js/10.dc6a57bc.js"><link rel="prefetch" href="/assets/js/11.05a7896a.js"><link rel="prefetch" href="/assets/js/12.87f729cc.js"><link rel="prefetch" href="/assets/js/13.b783eb80.js"><link rel="prefetch" href="/assets/js/14.fe15610f.js"><link rel="prefetch" href="/assets/js/15.4d747cf5.js"><link rel="prefetch" href="/assets/js/16.12cc21ce.js"><link rel="prefetch" href="/assets/js/17.87e584b1.js"><link rel="prefetch" href="/assets/js/18.a408f5f0.js"><link rel="prefetch" href="/assets/js/19.e175f669.js"><link rel="prefetch" href="/assets/js/2.81340e14.js"><link rel="prefetch" href="/assets/js/20.c6e6f090.js"><link rel="prefetch" href="/assets/js/21.b92c5565.js"><link rel="prefetch" href="/assets/js/22.eb576cbd.js"><link rel="prefetch" href="/assets/js/23.08a7db77.js"><link rel="prefetch" href="/assets/js/24.d61aae73.js"><link rel="prefetch" href="/assets/js/25.09c47cf9.js"><link rel="prefetch" href="/assets/js/26.116135c4.js"><link rel="prefetch" href="/assets/js/27.d0014973.js"><link rel="prefetch" href="/assets/js/28.9267b2b6.js"><link rel="prefetch" href="/assets/js/29.41694a7d.js"><link rel="prefetch" href="/assets/js/3.df97d12b.js"><link rel="prefetch" href="/assets/js/30.02a18457.js"><link rel="prefetch" href="/assets/js/31.a2736d54.js"><link rel="prefetch" href="/assets/js/32.b6f1a898.js"><link rel="prefetch" href="/assets/js/33.2327629e.js"><link rel="prefetch" href="/assets/js/34.d381e84e.js"><link rel="prefetch" href="/assets/js/35.61f98868.js"><link rel="prefetch" href="/assets/js/36.4c841ea5.js"><link rel="prefetch" href="/assets/js/37.681ae4cb.js"><link rel="prefetch" href="/assets/js/39.4b09873b.js"><link rel="prefetch" href="/assets/js/4.283ac3a2.js"><link rel="prefetch" href="/assets/js/40.128c670d.js"><link rel="prefetch" href="/assets/js/41.4e5a175a.js"><link rel="prefetch" href="/assets/js/42.9931eddc.js"><link rel="prefetch" href="/assets/js/43.865cca26.js"><link rel="prefetch" href="/assets/js/44.5755d469.js"><link rel="prefetch" href="/assets/js/45.febddf97.js"><link rel="prefetch" href="/assets/js/46.7562b5b2.js"><link rel="prefetch" href="/assets/js/5.57704351.js"><link rel="prefetch" href="/assets/js/6.955fc97c.js"><link rel="prefetch" href="/assets/js/7.0d473d0c.js"><link rel="prefetch" href="/assets/js/8.156d9fda.js"><link rel="prefetch" href="/assets/js/9.9d034739.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.3e1d0bd1.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">lizhouwei</span></a> <div class="links" style="max-width:nullpx;"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">首页</a></div><div class="nav-item"><a href="/java/" class="nav-link">java语言</a></div><div class="nav-item"><a href="/algorithm/" class="nav-link">数据结构与算法</a></div><div class="nav-item"><a href="/framework/" class="nav-link router-link-active">框架</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">链接</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/lizhouwei" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  github
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li><li class="dropdown-item"><!----> <a href="https://www.cnblogs.com/lizhouwei/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  博客园
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div><div class="nav-item"><a href="/about/" class="nav-link">关于</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">首页</a></div><div class="nav-item"><a href="/java/" class="nav-link">java语言</a></div><div class="nav-item"><a href="/algorithm/" class="nav-link">数据结构与算法</a></div><div class="nav-item"><a href="/framework/" class="nav-link router-link-active">框架</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">链接</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/lizhouwei" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  github
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li><li class="dropdown-item"><!----> <a href="https://www.cnblogs.com/lizhouwei/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  博客园
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div><div class="nav-item"><a href="/about/" class="nav-link">关于</a></div> <!----></nav>  <ul class="sidebar-links"><li><div class="sidebar-group first collapsable"><p class="sidebar-heading open"><span>spring</span> <span class="arrow down"></span></p> <ul class="sidebar-group-items"><li><a href="/framework/spring/" class="sidebar-link">文章目录</a></li><li><a href="/framework/spring/接口流量控制.html" class="sidebar-link">接口流量控制</a></li><li><a href="/framework/spring/GuavaRateLimiter.html" class="active sidebar-link">RateLimiter源码</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/framework/spring/GuavaRateLimiter.html#smoothbursty" class="sidebar-link">SmoothBursty</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/framework/spring/GuavaRateLimiter.html#源码解析" class="sidebar-link">源码解析</a></li><li class="sidebar-sub-header"><a href="/framework/spring/GuavaRateLimiter.html#代码示例" class="sidebar-link">代码示例</a></li></ul></li><li class="sidebar-sub-header"><a href="/framework/spring/GuavaRateLimiter.html#warmingup" class="sidebar-link">WarmingUp</a></li></ul></li></ul></div></li><li><div class="sidebar-group collapsable"><p class="sidebar-heading"><span>spring-core</span> <span class="arrow right"></span></p> <!----></div></li><li><div class="sidebar-group collapsable"><p class="sidebar-heading"><span>spring-beans</span> <span class="arrow right"></span></p> <!----></div></li><li><div class="sidebar-group collapsable"><p class="sidebar-heading"><span>spring-aop</span> <span class="arrow right"></span></p> <!----></div></li><li><div class="sidebar-group collapsable"><p class="sidebar-heading"><span>springBoot</span> <span class="arrow right"></span></p> <!----></div></li><li><div class="sidebar-group collapsable"><p class="sidebar-heading"><span>设计模式</span> <span class="arrow right"></span></p> <!----></div></li></ul> </div> <div class="page"> <div class="content"><h1 id="ratelimiter源码"><a href="#ratelimiter源码" aria-hidden="true" class="header-anchor">#</a> RateLimiter源码</h1> <p>Guava RateLimiter提供了两种限流算法实现：</p> <ul><li><strong>使用Bursty（突发）方式实现平滑突发限流(SmoothBursty)</strong></li> <li><strong>使用WarmingUp（预热）方式实现平滑预热限流(SmoothWarmingUp)</strong></li></ul> <h2 id="smoothbursty"><a href="#smoothbursty" aria-hidden="true" class="header-anchor">#</a> SmoothBursty</h2> <h3 id="源码解析"><a href="#源码解析" aria-hidden="true" class="header-anchor">#</a> 源码解析</h3> <p>以下面代码为例</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RateLimiterMain</span> <span class="token punctuation">{</span>
+
+  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">//初始化</span>
+    <span class="token class-name">RateLimiter</span> rateLimiter  <span class="token operator">=</span> <span class="token class-name">RateLimiter</span><span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token comment">//不阻塞，返回true 或 false</span>
+    rateLimiter<span class="token punctuation">.</span><span class="token function">tryAcquire</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">//阻塞，返回离下一个Token产生的时间间隔</span>
+    rateLimiter<span class="token punctuation">.</span><span class="token function">acquire</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>RateLimiter.create做了两件事情创建<code>SmoothBursty</code>对象和设置了速率，源码如下</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>google<span class="token punctuation">.</span>common<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">RateLimiter</span> <span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">RateLimiter</span> <span class="token function">create</span><span class="token punctuation">(</span><span class="token keyword">double</span> permitsPerSecond<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token function">create</span><span class="token punctuation">(</span>permitsPerSecond<span class="token punctuation">,</span> <span class="token class-name">RateLimiter</span><span class="token punctuation">.</span><span class="token class-name">SleepingStopwatch</span><span class="token punctuation">.</span><span class="token function">createFromSystemTimer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token annotation punctuation">@VisibleForTesting</span>
+  <span class="token keyword">static</span> <span class="token class-name">RateLimiter</span> <span class="token function">create</span><span class="token punctuation">(</span><span class="token keyword">double</span> permitsPerSecond<span class="token punctuation">,</span> <span class="token class-name">RateLimiter</span><span class="token punctuation">.</span><span class="token class-name">SleepingStopwatch</span> stopwatch<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token class-name">RateLimiter</span> rateLimiter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SmoothBursty</span><span class="token punctuation">(</span>stopwatch<span class="token punctuation">,</span> <span class="token number">1.0D</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      rateLimiter<span class="token punctuation">.</span><span class="token function">setRate</span><span class="token punctuation">(</span>permitsPerSecond<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span> rateLimiter<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>新建<code>SmoothBursty</code>对象。它指定的是能够存储的最大时间是多长，比如设置的时间是1s,那么假设允许每秒钟发放的令牌数量为2，能存储的最大量为2；<br>
+setRate。 内部通过私有锁来保证速率的修改是线程安全的</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>google<span class="token punctuation">.</span>common<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">RateLimiter</span> <span class="token punctuation">{</span>
+  <span class="token keyword">private</span> <span class="token class-name">Object</span> <span class="token function">mutex</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token class-name">Object</span> mutex <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>mutexDoNotUseDirectly<span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>mutex <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">synchronized</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+              mutex <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>mutexDoNotUseDirectly<span class="token punctuation">;</span>
+              <span class="token keyword">if</span> <span class="token punctuation">(</span>mutex <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                  <span class="token keyword">this</span><span class="token punctuation">.</span>mutexDoNotUseDirectly <span class="token operator">=</span> mutex <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+              <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">return</span> mutex<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">void</span> <span class="token function">setRate</span><span class="token punctuation">(</span><span class="token keyword">double</span> permitsPerSecond<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token class-name">Preconditions</span><span class="token punctuation">.</span><span class="token function">checkArgument</span><span class="token punctuation">(</span>permitsPerSecond <span class="token operator">&gt;</span> <span class="token number">0.0D</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token class-name">Double</span><span class="token punctuation">.</span><span class="token function">isNaN</span><span class="token punctuation">(</span>permitsPerSecond<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">&quot;rate must be positive&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">synchronized</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">mutex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">doSetRate</span><span class="token punctuation">(</span>permitsPerSecond<span class="token punctuation">,</span> stopwatch<span class="token punctuation">.</span><span class="token function">readMicros</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">abstract</span> <span class="token keyword">void</span> <span class="token function">doSetRate</span><span class="token punctuation">(</span><span class="token keyword">double</span> permitsPerSecond<span class="token punctuation">,</span> <span class="token keyword">long</span> nowMicros<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>由于是子类对象是<code>SmoothBursty</code>,所以父类<code>RateLimiter</code>中doSetRate方法的具体实现在<code>SmoothRateLimiter</code>和内部子类<code>SmoothBursty</code>中</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">SmoothRateLimiter</span> <span class="token keyword">extends</span> <span class="token class-name">RateLimiter</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">final</span> <span class="token keyword">void</span> <span class="token function">doSetRate</span><span class="token punctuation">(</span><span class="token keyword">double</span> permitsPerSecond<span class="token punctuation">,</span> <span class="token keyword">long</span> nowMicros<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">//1：查看当前的时间是否比预计下次可发放令牌的时间要大，如果大，更新下次可发放令牌的时间为当前时间</span>
+      <span class="token function">resync</span><span class="token punctuation">(</span>nowMicros<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token comment">//2：计算两次发放令牌之间的时间间隔，比如1s中需要发放5个，那它就是 200000.0微秒</span>
+      <span class="token keyword">double</span> stableIntervalMicros <span class="token operator">=</span> SECONDS<span class="token punctuation">.</span><span class="token function">toMicros</span><span class="token punctuation">(</span><span class="token number">1L</span><span class="token punctuation">)</span> <span class="token operator">/</span> permitsPerSecond<span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>stableIntervalMicros <span class="token operator">=</span> stableIntervalMicros<span class="token punctuation">;</span>
+      <span class="token comment">//3：设置maxPermits和storedPermits</span>
+      <span class="token function">doSetRate</span><span class="token punctuation">(</span>permitsPerSecond<span class="token punctuation">,</span> stableIntervalMicros<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">void</span> <span class="token function">resync</span><span class="token punctuation">(</span><span class="token keyword">long</span> nowMicros<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">// if nextFreeTicket is in the past, resync to now</span>
+      <span class="token comment">//查看当前的时间是否比预计下次可发放令牌的时间要大，如果大，更新下次可发放令牌的时间为当前时间</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>nowMicros <span class="token operator">&gt;</span> nextFreeTicketMicros<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">double</span> newPermits <span class="token operator">=</span> <span class="token punctuation">(</span>nowMicros <span class="token operator">-</span> nextFreeTicketMicros<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token function">coolDownIntervalMicros</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        storedPermits <span class="token operator">=</span> <span class="token function">min</span><span class="token punctuation">(</span>maxPermits<span class="token punctuation">,</span> storedPermits <span class="token operator">+</span> newPermits<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        nextFreeTicketMicros <span class="token operator">=</span> nowMicros<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">abstract</span> <span class="token keyword">void</span> <span class="token function">doSetRate</span><span class="token punctuation">(</span><span class="token keyword">double</span> permitsPerSecond<span class="token punctuation">,</span> <span class="token keyword">double</span> stableIntervalMicros<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+    <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">class</span> <span class="token class-name">SmoothBursty</span> <span class="token keyword">extends</span> <span class="token class-name">SmoothRateLimiter</span> <span class="token punctuation">{</span>
+    
+      <span class="token keyword">void</span> <span class="token function">doSetRate</span><span class="token punctuation">(</span><span class="token keyword">double</span> permitsPerSecond<span class="token punctuation">,</span> <span class="token keyword">double</span> stableIntervalMicros<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">double</span> oldMaxPermits <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>maxPermits<span class="token punctuation">;</span>
+        maxPermits <span class="token operator">=</span> maxBurstSeconds <span class="token operator">*</span> permitsPerSecond<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>oldMaxPermits <span class="token operator">==</span> <span class="token class-name">Double</span><span class="token punctuation">.</span>POSITIVE_INFINITY<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token comment">// if we don't special-case this, we would get storedPermits == NaN, below</span>
+          storedPermits <span class="token operator">=</span> maxPermits<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+          storedPermits <span class="token operator">=</span> <span class="token punctuation">(</span>oldMaxPermits <span class="token operator">==</span> <span class="token number">0.0</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token number">0.0</span> <span class="token comment">// initial state</span>
+                  <span class="token operator">:</span> storedPermits <span class="token operator">*</span> maxPermits <span class="token operator">/</span> oldMaxPermits<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>在整个的初始化过程中，关键信息是：<br> <code>nextFreeTicketMicros</code> 预计下次发放令牌的时间<br> <code>stableIntervalMicros</code> 两次发放令牌之间的时间间隔<br> <code>maxPermits</code> 最大能存储的令牌的数量<br> <code>storedPermits</code> 已经存储的令牌数</p> <ul><li><strong>为什么记录下次令牌产生的时间nextFreeTicketMicros?</strong></li></ul> <p>最简单的维持QPS速率的方式就是记住最后一次请求的时间，然后确保再次有请求过来的时候，已经经过了 1/QPS 秒。比如QPS是5 次/秒，只需要确保两次请求时间经过了200ms即可，如果刚好在100ms到达，就会再等待100ms，也就是说，如果一次性需要15个令牌，需要的时间为为3s。但是对于一个长时间没有请求的系统，这样的的设计方式有一定的不合理之处。考虑一个场景：如果一个RateLimiter每秒产生1个令牌，它一直没有使用过，突然来了一个需要100个令牌的请求，选择等待100s再执行这个请求，显得不太明智，更好的处理方式为立即执行它，然后把接下来的请求推迟100s。</p> <p>因而RateLimiter本身并不记下最后一次请求的时间，而是记下下一次期望运行的时间nextFreeTicketMicros。</p> <p>这种方式带来的一个好处是，可以去判断等待的超时时间是否大于下次运行的时间，以使得能够执行，如果等待的超时时间太短，就能立即返回。</p> <ul><li><strong>为什么会有一个标记代表存储了多少令牌？</strong></li></ul> <p>同样的考虑长时间没有使用的场景。如果长时间没有请求，突然间来了，这个时候是否应该立马放行这些请求？长时间没有使用可能意味着两件事：</p> <p>很多资源是存在空闲的情况，比如说网络请求长时间没有，它的缓冲区很有可能是空的，此时是可以加速传输，提高它的利用率<br>
+一些时候，瞬间的爆发会导致溢出，比如说服务上的缓存过期了，需要去查询库，这个花销是非常“昂贵”的，过多的请求会导致 数据库 撑不住<br>
+RateLimiter就使用storedPermits来给过去请求的不充分程度建模。它的存储规则如下： 假设RateLimiter每秒产生一个令牌,每过去一秒如果没有请求，RateLimter也就没有消费，就使storedPermits增长1。假设10s之内都没有请求过来,storedPermits就变成了10（假设maxPermits&gt;10），此时如果要获取3个令牌，会使用storedPermits来中的令牌来处理，然后它的值变为了7，片刻之后，如果调用了acquire(10),部分的会从storedPermits拿到7个权限，剩余的3个则需要重新产生。</p> <p>总的来说RateLimiter提供了一个storedPermits变量，当资源利用充分的时候，它就是0，最大可以增长到 maxStoredPermits。请求所需的令牌来自于两个地方：stored permits(空闲时存储的令牌)和fresh permits（现有的令牌）</p> <ul><li><strong>怎么衡量从storedPermits中获取令牌这个过程？</strong></li></ul> <p>同样假设每秒RateLimiter只生产一个令牌，正常情况下，如果一次来了3个请求，整个过程会持续3秒钟。考虑到长时间没有请求的场景：</p> <p>资源空闲。这种时候系统是能承受住一定量的请求的，当然希望在承受范围之内能够更快的提供请求，也就是说，如果有存储令牌，相比新产生令牌，此时希望能够更快的获取令牌，也就是此时从存储令牌中获取令牌的时间消耗要比产生新令牌要少，从而更快相应请求<br>
+瞬时流量过大。这时候就不希望过快的消耗存储的令牌，希望它能够相比产生新的令牌的时间消耗大些，从而能够使请求相对平缓。<br>
+分析可知，针对不同的场景，需要对获取storedPermits做不同的处理，Ratelimiter的实现方式就是 storedPermitsToWaitTime 函数，它建立了从storedPermits中获取令牌和时间花销的模型函数,而衡量时间的花销就是通过对模型函数进行积分计算，比如原来存储了10个令牌，现在需要拿3个令牌，还剩余7个，那么所需要的时间花销就是该函数从7-10区间中的积分。</p> <p>这种方式保证了任何获取令牌方式所需要的时间都是一样的，好比 每次拿一个和先拿两个再拿一个，从时间上来讲并没有分别。</p> <ul><li><strong>storedPermitsToWaitTime实现原理</strong><br>
+storedPermits本身是用来衡量没有使用的时间的。在没有使用令牌的时候存储，存储的速率（单位时间内存储的令牌的个数）是 每没用1次就存储1次: rate=permites/time 。也就是说 1 / rate = time / permits，那么可得到 (1/rate)*permits 就可以来衡量时间花销。</li></ul> <p>选取(1/rate)作为基准线</p> <p>如果选取一条在它之上的线，就做到了比从fresh permits中获取要慢；<br>
+如果在基准线之下，则是比从fresh permits中获取要快；<br>
+刚好是基准线，那么从storedPermits中获取和新产生的速率一模一样；<br>
+Bursty的storedPermitsToWaitTime函数实现<br>
+long storedPermitsToWaitTime(double storedPermits, double permitsToTake) {<br>
+return 0L;<br>
+}<br>
+复制代码<br>
+它直接返回了0，也就是在基准线之下，获取storedPermits的速率比新产生要快，立即能够拿到存储的量</p> <h3 id="代码示例"><a href="#代码示例" aria-hidden="true" class="header-anchor">#</a> 代码示例</h3> <h4 id="busty-acquire-运行示例"><a href="#busty-acquire-运行示例" aria-hidden="true" class="header-anchor">#</a> Busty-Acquire 运行示例</h4> <p>Acquire会阻塞运行的结果，而且会提前消费</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RateLimiterMain</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        <span class="token class-name">RateLimiter</span> rateLimiter <span class="token operator">=</span><span class="token class-name">RateLimiter</span><span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        rateLimiter<span class="token punctuation">.</span><span class="token function">acquire</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;time cost:&quot;</span><span class="token operator">+</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span>start<span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">&quot;ms&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        rateLimiter<span class="token punctuation">.</span><span class="token function">acquire</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;time cost:&quot;</span><span class="token operator">+</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span>start<span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">&quot;ms&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        rateLimiter<span class="token punctuation">.</span><span class="token function">acquire</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;time cost:&quot;</span><span class="token operator">+</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span>start<span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">&quot;ms&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        rateLimiter<span class="token punctuation">.</span><span class="token function">acquire</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;time cost:&quot;</span><span class="token operator">+</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span>start<span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">&quot;ms&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>执行结果</p> <div class="language-java extra-class"><pre class="language-java"><code>time cost<span class="token operator">:</span><span class="token number">0</span>ms
+time cost<span class="token operator">:</span><span class="token number">1005</span>ms
+time cost<span class="token operator">:</span><span class="token number">2004</span>ms
+time cost<span class="token operator">:</span><span class="token number">5001</span>ms
+</code></pre></div><p>第一次会立马运行，然后因为请求了一次，下次发放令牌的时间往后迁移,获取的令牌越多，下次能够运行需要等待的时间越长</p> <ol><li>在多线程背景运行如下<br>
+定义执行的线程体</li></ol> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">class</span> <span class="token class-name">MyTask</span> <span class="token keyword">implements</span> <span class="token class-name">Runnable</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name">CountDownLatch</span> latch<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">RateLimiter</span> limiter<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">long</span> start<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">MyTask</span><span class="token punctuation">(</span><span class="token class-name">CountDownLatch</span> latch<span class="token punctuation">,</span> <span class="token class-name">RateLimiter</span> limiter<span class="token punctuation">,</span> <span class="token keyword">long</span> start<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>latch <span class="token operator">=</span> latch<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>limiter <span class="token operator">=</span> limiter<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>start <span class="token operator">=</span> start<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token comment">//使得线程同时触发</span>
+            latch<span class="token punctuation">.</span><span class="token function">await</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">&quot;result:&quot;</span> <span class="token operator">+</span> limiter<span class="token punctuation">.</span><span class="token function">acquire</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot; time &quot;</span> <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> start<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">&quot;ms&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>执行多线程</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RateLimiterMain</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+      <span class="token class-name">RateLimiter</span> rateLimiter <span class="token operator">=</span> <span class="token class-name">RateLimiter</span><span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">long</span> start <span class="token operator">=</span> <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      rateLimiter<span class="token punctuation">.</span><span class="token function">acquire</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;time cost:&quot;</span> <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> start<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">&quot;ms&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token class-name">ExecutorService</span> service <span class="token operator">=</span> <span class="token class-name">Executors</span><span class="token punctuation">.</span><span class="token function">newFixedThreadPool</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token class-name">CountDownLatch</span> latch <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CountDownLatch</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          service<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">MyTask1</span><span class="token punctuation">(</span>latch<span class="token punctuation">,</span> rateLimiter<span class="token punctuation">,</span> start<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          latch<span class="token punctuation">.</span><span class="token function">countDown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;countdown:&quot;</span> <span class="token operator">+</span> latch<span class="token punctuation">.</span><span class="token function">getCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;countdown over&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      service<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>执行结果</p> <div class="language-java extra-class"><pre class="language-java"><code>time cost<span class="token operator">:</span><span class="token number">0</span>ms
+countdown<span class="token operator">:</span><span class="token number">9</span>
+countdown<span class="token operator">:</span><span class="token number">8</span>
+countdown<span class="token operator">:</span><span class="token number">7</span>
+countdown<span class="token operator">:</span><span class="token number">6</span>
+countdown<span class="token operator">:</span><span class="token number">5</span>
+countdown<span class="token operator">:</span><span class="token number">4</span>
+countdown<span class="token operator">:</span><span class="token number">3</span>
+countdown<span class="token operator">:</span><span class="token number">2</span>
+countdown<span class="token operator">:</span><span class="token number">1</span>
+countdown<span class="token operator">:</span><span class="token number">0</span>
+countdown over
+result<span class="token operator">:</span><span class="token number">2.943907</span> time <span class="token number">3061</span>ms
+result<span class="token operator">:</span><span class="token number">4.941499</span> time <span class="token number">5001</span>ms
+result<span class="token operator">:</span><span class="token number">6.941334</span> time <span class="token number">7000</span>ms
+result<span class="token operator">:</span><span class="token number">8.94101</span> time <span class="token number">9000</span>ms
+result<span class="token operator">:</span><span class="token number">10.940965</span> time <span class="token number">11000</span>ms
+result<span class="token operator">:</span><span class="token number">12.94032</span> time <span class="token number">13001</span>ms
+result<span class="token operator">:</span><span class="token number">14.940256</span> time <span class="token number">15001</span>ms
+result<span class="token operator">:</span><span class="token number">16.939862</span> time <span class="token number">17000</span>ms
+result<span class="token operator">:</span><span class="token number">18.939853</span> time <span class="token number">19001</span>ms
+result<span class="token operator">:</span><span class="token number">20.939473</span> time <span class="token number">21001</span>ms
+</code></pre></div><h4 id="bursty-tryacquire-运行示例"><a href="#bursty-tryacquire-运行示例" aria-hidden="true" class="header-anchor">#</a> Bursty-TryAcquire 运行示例</h4> <p>程序设置10个线程,使得并发数为10，模拟线上的场景,任务内容如下</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">class</span> <span class="token class-name">MyTask</span> <span class="token keyword">implements</span> <span class="token class-name">Runnable</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">CountDownLatch</span> latch<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">RateLimiter</span> limiter<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">MyTask</span><span class="token punctuation">(</span><span class="token class-name">CountDownLatch</span> latch<span class="token punctuation">,</span> <span class="token class-name">RateLimiter</span> limiter<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>latch <span class="token operator">=</span> latch<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>limiter <span class="token operator">=</span> limiter<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token comment">//使得线程同时触发</span>
+            latch<span class="token punctuation">.</span><span class="token function">await</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;time &quot;</span> <span class="token operator">+</span> <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">&quot;ms :&quot;</span> <span class="token operator">+</span> limiter<span class="token punctuation">.</span><span class="token function">tryAcquire</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ol><li>这里设置限制每秒的流量为5，也就是说第一次请求过后，下次请求需要等200ms</li></ol> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RateLimiterMain</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        <span class="token class-name">RateLimiter</span> rateLimiter <span class="token operator">=</span> <span class="token class-name">RateLimiter</span><span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">ExecutorService</span> service <span class="token operator">=</span> <span class="token class-name">Executors</span><span class="token punctuation">.</span><span class="token function">newFixedThreadPool</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">CountDownLatch</span> latch <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CountDownLatch</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            service<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">MyTask</span><span class="token punctuation">(</span>latch<span class="token punctuation">,</span> rateLimiter<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            latch<span class="token punctuation">.</span><span class="token function">countDown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;countdown:&quot;</span> <span class="token operator">+</span> latch<span class="token punctuation">.</span><span class="token function">getCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;countdown over&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        service<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>结果如下</p> <div class="language-java extra-class"><pre class="language-java"><code>countdown<span class="token operator">:</span><span class="token number">9</span>
+countdown<span class="token operator">:</span><span class="token number">8</span>
+countdown<span class="token operator">:</span><span class="token number">7</span>
+countdown<span class="token operator">:</span><span class="token number">6</span>
+countdown<span class="token operator">:</span><span class="token number">5</span>
+countdown<span class="token operator">:</span><span class="token number">4</span>
+countdown<span class="token operator">:</span><span class="token number">3</span>
+countdown<span class="token operator">:</span><span class="token number">2</span>
+countdown<span class="token operator">:</span><span class="token number">1</span>
+countdown<span class="token operator">:</span><span class="token number">0</span>
+countdown over
+time <span class="token number">1556114594891</span>ms <span class="token operator">:</span><span class="token boolean">true</span>
+time <span class="token number">1556114594907</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+time <span class="token number">1556114594907</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+time <span class="token number">1556114594907</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+time <span class="token number">1556114594907</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+time <span class="token number">1556114594922</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+time <span class="token number">1556114594922</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+time <span class="token number">1556114594922</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+time <span class="token number">1556114594922</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+time <span class="token number">1556114594922</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+</code></pre></div><ol start="2"><li>如果使得线程等待401ms,那么程序会存储的令牌为2个，注意刚开始存储的时候，不是慢的，这里的存储量是慢慢增长，并且能够立马拿到</li></ol> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RateLimiterMain</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+      <span class="token class-name">RateLimiter</span> rateLimiter <span class="token operator">=</span> <span class="token class-name">RateLimiter</span><span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token class-name">ExecutorService</span> service <span class="token operator">=</span> <span class="token class-name">Executors</span><span class="token punctuation">.</span><span class="token function">newFixedThreadPool</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token class-name">CountDownLatch</span> latch <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CountDownLatch</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          service<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">MyTask</span><span class="token punctuation">(</span>latch<span class="token punctuation">,</span> rateLimiter<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">==</span> <span class="token number">9</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+              <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                  <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">401</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+              <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                  e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+              <span class="token punctuation">}</span>
+              <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;sleep 10 seconds over&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token punctuation">}</span>
+          latch<span class="token punctuation">.</span><span class="token function">countDown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;countdown:&quot;</span> <span class="token operator">+</span> latch<span class="token punctuation">.</span><span class="token function">getCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;countdown over&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      service<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>执行结果</p> <div class="language-java extra-class"><pre class="language-java"><code>countdown<span class="token operator">:</span><span class="token number">9</span>
+countdown<span class="token operator">:</span><span class="token number">8</span>
+countdown<span class="token operator">:</span><span class="token number">7</span>
+countdown<span class="token operator">:</span><span class="token number">6</span>
+countdown<span class="token operator">:</span><span class="token number">5</span>
+countdown<span class="token operator">:</span><span class="token number">4</span>
+countdown<span class="token operator">:</span><span class="token number">3</span>
+countdown<span class="token operator">:</span><span class="token number">2</span>
+countdown<span class="token operator">:</span><span class="token number">1</span>
+sleep <span class="token number">10</span> seconds over
+countdown<span class="token operator">:</span><span class="token number">0</span>
+countdown over
+time <span class="token number">1556115139413</span>ms <span class="token operator">:</span><span class="token boolean">true</span>
+time <span class="token number">1556115139413</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+time <span class="token number">1556115139413</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+time <span class="token number">1556115139413</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+time <span class="token number">1556115139413</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+time <span class="token number">1556115139413</span>ms <span class="token operator">:</span><span class="token boolean">true</span>
+time <span class="token number">1556115139413</span>ms <span class="token operator">:</span><span class="token boolean">true</span>
+time <span class="token number">1556115139413</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+time <span class="token number">1556115139413</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+time <span class="token number">1556115139413</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+</code></pre></div><ol start="3"><li>如果等待时间超过1秒，允许放行的流量也不会超过6个，存储的令牌+第一个令牌</li></ol> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RateLimiterMain</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+      <span class="token class-name">RateLimiter</span> rateLimiter <span class="token operator">=</span> <span class="token class-name">RateLimiter</span><span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token class-name">ExecutorService</span> service <span class="token operator">=</span> <span class="token class-name">Executors</span><span class="token punctuation">.</span><span class="token function">newFixedThreadPool</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token class-name">CountDownLatch</span> latch <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CountDownLatch</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          service<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">MyTask</span><span class="token punctuation">(</span>latch<span class="token punctuation">,</span> rateLimiter<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">==</span> <span class="token number">9</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+              <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                  <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1001</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+              <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                  e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+              <span class="token punctuation">}</span>
+              <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;sleep 10 seconds over&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token punctuation">}</span>
+          latch<span class="token punctuation">.</span><span class="token function">countDown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;countdown:&quot;</span> <span class="token operator">+</span> latch<span class="token punctuation">.</span><span class="token function">getCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;countdown over&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      service<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>执行结果</p> <div class="language-java extra-class"><pre class="language-java"><code>countdown<span class="token operator">:</span><span class="token number">9</span>
+countdown<span class="token operator">:</span><span class="token number">8</span>
+countdown<span class="token operator">:</span><span class="token number">7</span>
+countdown<span class="token operator">:</span><span class="token number">6</span>
+countdown<span class="token operator">:</span><span class="token number">5</span>
+countdown<span class="token operator">:</span><span class="token number">4</span>
+countdown<span class="token operator">:</span><span class="token number">3</span>
+countdown<span class="token operator">:</span><span class="token number">2</span>
+countdown<span class="token operator">:</span><span class="token number">1</span>
+sleep <span class="token number">10</span> seconds over
+countdown<span class="token operator">:</span><span class="token number">0</span>
+time <span class="token number">1556115522343</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+time <span class="token number">1556115522343</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+time <span class="token number">1556115522343</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+time <span class="token number">1556115522343</span>ms <span class="token operator">:</span><span class="token boolean">false</span>
+time <span class="token number">1556115522343</span>ms <span class="token operator">:</span><span class="token boolean">true</span>
+time <span class="token number">1556115522343</span>ms <span class="token operator">:</span><span class="token boolean">true</span>
+time <span class="token number">1556115522343</span>ms <span class="token operator">:</span><span class="token boolean">true</span>
+time <span class="token number">1556115522343</span>ms <span class="token operator">:</span><span class="token boolean">true</span>
+time <span class="token number">1556115522343</span>ms <span class="token operator">:</span><span class="token boolean">true</span>
+time <span class="token number">1556115522343</span>ms <span class="token operator">:</span><span class="token boolean">true</span>
+countdown over
+</code></pre></div><h2 id="warmingup"><a href="#warmingup" aria-hidden="true" class="header-anchor">#</a> WarmingUp</h2> <p>WarmingUp<br>
+//初始化<br>
+RateLimiter r =RateLimiter.create(1,1,TimeUnit.SECONDS);<br>
+//不阻塞<br>
+r.tryAcquire();<br>
+//阻塞<br>
+r.acquire()<br>
+复制代码<br>
+create方法创建了WarmingUp对象，并这只了对应的速率</p> <p>RateLimiter rateLimiter = new WarmingUp(ticker, warmupPeriod, unit);<br>
+rateLimiter.setRate(permitsPerSecond);<br>
+复制代码<br>
+相比Bursty，它多了个参数warmupPeroid,它会以提供的unit为时间单位，转换成微秒存储。setRate类似于Bursty，只是在doSetRate提供不同的实现</p> <p>void doSetRate(double permitsPerSecond, double stableIntervalMicros) {<br>
+double oldMaxPermits = maxPermits;<br>
+//1:最大的存储个数为需要预热的时间除以两个请求的时间间隔，比如设定预热时间为1s,每秒有5个请求，那么最大的存储个数为1000ms/200ms=5个<br>
+maxPermits = warmupPeriodMicros / stableIntervalMicros;<br>
+//2:计算最大存储permits的一半<br>
+halfPermits = maxPermits / 2.0;<br>
+//3:初始化稳定时间间隔的3倍作为冷却时间间隔<br>
+double coldIntervalMicros = stableIntervalMicros * 3.0;<br>
+//4:设置基准线的斜率<br>
+slope = (coldIntervalMicros - stableIntervalMicros) / halfPermits;<br>
+if (oldMaxPermits == Double.POSITIVE_INFINITY) {<br>
+storedPermits = 0.0;<br>
+} else {<br>
+storedPermits = (oldMaxPermits == 0.0)<br>
+? maxPermits // 初始条件下，认为就是存储满的，以达到缓慢消费的效果<br>
+: storedPermits * maxPermits / oldMaxPermits;<br>
+}<br>
+}<br>
+复制代码<br>
+在这个过程中可以看到Warmup方式新增了一个halfPermits的设计，以及通过公式 slope=(coldIntervalMicros-stableIntervalMicros)/halfPermits ，他们在函数 storedPermitsToWaitTime中得到了运用</p> <p>@Overridelong storedPermitsToWaitTime(double storedPermits, double permitsToTake) {<br>
+//1:计算储存的令牌中超过了最大令牌一半的数量<br>
+double availablePermitsAboveHalf = storedPermits - halfPermits;<br>
+long micros = 0;<br>
+// 计算超过一半的部分所需要的时间花销(对于函数来说，就是积分计算)<br>
+if (availablePermitsAboveHalf &gt; 0.0) {<br>
+double permitsAboveHalfToTake = Math.min(availablePermitsAboveHalf, permitsToTake);<br>
+micros = (long) (permitsAboveHalfToTake * (permitsToTime(availablePermitsAboveHalf)<br>
++ permitsToTime(availablePermitsAboveHalf - permitsAboveHalfToTake)) / 2.0);<br>
+permitsToTake -= permitsAboveHalfToTake;<br>
+}<br>
+// 计算函数的尚未超过一半的部分所需要的时间花销<br>
+micros += (stableIntervalMicros * permitsToTake);<br>
+return micros;<br>
+}</p> <p>private double permitsToTime(double permits) {<br>
+return stableIntervalMicros + permits * slope;<br>
+}<br>
+复制代码<br>
+WarmingUp的设计理念<br>
+WarmingUp对时间花销衡量方式为下图</p> <div class="language-java extra-class"><pre class="language-java"><code>   <span class="token operator">*</span> <span class="token generics"><span class="token punctuation">&lt;</span>pre<span class="token punctuation">&gt;</span></span>
+   <span class="token operator">*</span>          <span class="token operator">^</span> throttling
+   <span class="token operator">*</span>          <span class="token operator">|</span>
+   <span class="token operator">*</span>    cold  <span class="token operator">+</span>                  <span class="token operator">/</span>
+   <span class="token operator">*</span> interval <span class="token operator">|</span>                 <span class="token operator">/</span><span class="token punctuation">.</span>
+   <span class="token operator">*</span>          <span class="token operator">|</span>                <span class="token operator">/</span> <span class="token punctuation">.</span>
+   <span class="token operator">*</span>          <span class="token operator">|</span>               <span class="token operator">/</span>  <span class="token punctuation">.</span>   ← <span class="token string">&quot;warmup period&quot;</span> is the area of the trapezoid between
+   <span class="token operator">*</span>          <span class="token operator">|</span>              <span class="token operator">/</span>   <span class="token punctuation">.</span>     thresholdPermits and maxPermits
+   <span class="token operator">*</span>          <span class="token operator">|</span>             <span class="token operator">/</span>    <span class="token punctuation">.</span>
+   <span class="token operator">*</span>          <span class="token operator">|</span>            <span class="token operator">/</span>     <span class="token punctuation">.</span>
+   <span class="token operator">*</span>          <span class="token operator">|</span>           <span class="token operator">/</span>      <span class="token punctuation">.</span>
+   <span class="token operator">*</span>   stable <span class="token operator">+</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">/</span>  WARM <span class="token punctuation">.</span>
+   <span class="token operator">*</span> interval <span class="token operator">|</span>          <span class="token punctuation">.</span>   UP  <span class="token punctuation">.</span>
+   <span class="token operator">*</span>          <span class="token operator">|</span>          <span class="token punctuation">.</span> PERIOD<span class="token punctuation">.</span>
+   <span class="token operator">*</span>          <span class="token operator">|</span>          <span class="token punctuation">.</span>       <span class="token punctuation">.</span>
+   <span class="token operator">*</span>        <span class="token number">0</span> <span class="token operator">+</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">+</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">-</span><span class="token operator">+</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span>→ storedPermits
+   <span class="token operator">*</span>          <span class="token number">0</span> thresholdPermits maxPermits
+   <span class="token operator">*</span> <span class="token operator">&lt;</span><span class="token operator">/</span>pre<span class="token operator">&gt;</span>
+</code></pre></div><p>复制代码<br>
+横轴表示存储的令牌个数，纵轴表示时间，这样函数的积分就可以表示所要消耗的时间。</p> <p>在程序刚开始运行的时候，warmingup方式会存满所有的令牌，而根据从存储令牌中的获取方式，可以实现从存储最大令牌中到降到一半令牌所需要的时间为存储同量令牌时间的2倍，从而使得刚开始的时候发放令牌的速度比较慢，等消耗一半之后，获取的速率和生产的速率一致，从而也就实现了一个‘热身’的概念</p> <p>从storedPermits中获取令牌所需要的时间，它分为两部分，以maxPetmits的一半为分割点</p> <p>storedPermits &lt;= halfPermits 的时候,存储和消费storedPermits的速率与产生的速率一模一样</p> <p>storedPermits&gt;halfPermits, 存储storePermites所需要的时间和产生的速率保持一致，但是消费storePermites从maxPermits到halfPermits所需要的时间为从halfPermits增长到maxPermits所需要时间的2被，也就是比新令牌产生要慢 为什么在分隔点计算还有斜率方面选了3倍和一半的位置 对函数做积分计算(图形面积)，刚好可以保证，超过一半的部分，如果要拿掉一半的存储令牌所需要的时间恰好是存储同样量（或者说是新令牌产生）时间花销的两倍，对应场景如果过了很长一段时间没有使用(存储的令牌会达到maxPermits),刚开始能接收请求的速率相对比较慢，然后再增长到稳定的消费速率</p> <p>关键在于存储的速率是和新令牌产生的速率一样，但是消费的速率，当存储的超过一半时，会慢于新令牌产生的速率，小于一半则速率是一样的</p> <p>TryAcquire<br>
+它会尝试去获取令牌，如果无法获取就立即返回，否则再超时时间之内返回给定的令牌。 源码如下</p> <p>public boolean tryAcquire(int permits, long timeout, TimeUnit unit) {<br>
+//1：使用微秒来转换超时时间<br>
+long timeoutMicros = unit.toMicros(timeout);<br>
+checkPermits(permits);<br>
+long microsToWait;<br>
+synchronized (mutex) {<br>
+long nowMicros = readSafeMicros();<br>
+//2.1：如果下次能够获取令牌的时间超过超时时间范围，立马返回；<br>
+if (nextFreeTicketMicros &gt; nowMicros + timeoutMicros) {<br>
+return false;<br>
+} else {<br>
+//2.2：获取需要等待的时间，本次获取的时间肯定不会超时<br>
+microsToWait = reserveNextTicket(permits, nowMicros);<br>
+}<br>
+}<br>
+//3：实行等待<br>
+ticker.sleepMicrosUninterruptibly(microsToWait);<br>
+return true;<br>
+}<br>
+复制代码<br>
+第一次运行的时候，nextFreeTicketMicros是创建时候的时间，必定小于当前时间，所以第一次肯定会放过，允许执行，只是需要计算要等待的时间。</p> <p>private long reserveNextTicket(double requiredPermits, long nowMicros) {<br>
+//1：如果下次可以获取令牌的时间在过去，更新<br>
+resync(nowMicros);<br>
+//2：计算距离下次获取令牌需要的时间，如果nextFreeTikcetMicros&gt;nowMicros，这个时间段必定在超时时间之内,假如入超时时间是0，那么必定是microsToNextFreeTicket趋近于0，也就是立马能够放行；<br>
+long microsToNextFreeTicket = Math.max(0, nextFreeTicketMicros - nowMicros);<br>
+//3：计算需要消耗的存储的令牌<br>
+double storedPermitsToSpend = Math.min(requiredPermits, this.storedPermits);<br>
+//4：计算需要新产生的令牌<br>
+double freshPermits = requiredPermits - storedPermitsToSpend;<br>
+//5：计算消耗存储令牌所需要的时间和新产生令牌所需要的时间。对于Bursty来讲，消耗存储的令牌所需要时间为0，WarmingUp方式则是需要根据不同的场景有不同的结果<br>
+long waitMicros = storedPermitsToWaitTime(this.storedPermits, storedPermitsToSpend)<br>
++ (long) (freshPermits * stableIntervalMicros);<br>
+//6：下次能够获取令牌的时间，需要延迟当前已经等待的时间，也就是说，如果立马有请求过来会放行，但是这个等待时间将会影响后续的请求访问，也就是说，这次的请求如果当前的特别的多，下一次能够请求的能够允许的时间必定会有很长的延迟<br>
+this.nextFreeTicketMicros = nextFreeTicketMicros + waitMicros;<br>
+//7：扣除消耗的存储令牌<br>
+this.storedPermits -= storedPermitsToSpend;<br>
+//8：返回本次要获取令牌所需要的时间,它肯定不会超过超时时间<br>
+return microsToNextFreeTicket;<br>
+}<br>
+复制代码<br>
+Acquire<br>
+它会阻塞知道允许放行，返回值为阻塞的时长 源码如下</p> <p>public double acquire(int permits) {<br>
+long microsToWait = reserve(permits); //也就是调用reserveNextTicket<br>
+ticker.sleepMicrosUninterruptibly(microsToWait); //阻塞住需要等待的时长<br>
+return 1.0 * microsToWait / TimeUnit.SECONDS.toMicros(1L);<br>
+}<br>
+复制代码</p> <p>WarmingUp-TryAcquire<br>
+使用warmingUp的方式由于默认已经存储满了令牌，那么，它在第一次请求执行完之后，必须等待一定的时间才会让下一次请求开始，而这个请求放行的时间则是会超过存储所需要的时间</p> <p>注意这里的不同，默认是存储满的，也就是刚开始的消费要慢很多</p> <p>RateLimiter r =RateLimiter.create(5,1,TimeUnit.SECONDS);<br>
+ExecutorService service = Executors.newFixedThreadPool(10);<br>
+CountDownLatch latch = new CountDownLatch(10);</p> <p>for (int i=0;i&lt;10;i++)<br>
+{</p> <pre><code>service.submit(new MyTask(latch, r));
+latch.countDown();
+System.out.println(&quot;countdown:&quot; + latch.getCount());
+</code></pre> <p>}<br>
+System.out.println(&quot;countdown over&quot;);<br>
+service.shutdown();<br>
+复制代码<br>
+运行结果如下</p> <p>countdown:9<br>
+countdown:8<br>
+countdown:7<br>
+countdown:6<br>
+countdown:5<br>
+countdown:4<br>
+countdown:3<br>
+countdown:2<br>
+countdown:1<br>
+countdown:0<br>
+countdown over<br>
+time 1538487677462ms :true<br>
+time 1538487677462ms :false<br>
+time 1538487677462ms :false<br>
+time 1538487677462ms :false<br>
+time 1538487677462ms :false<br>
+time 1538487677462ms :false<br>
+time 1538487677462ms :false<br>
+time 1538487677462ms :false<br>
+time 1538487677462ms :false<br>
+time 1538487677462ms :false<br>
+复制代码</p> <p>WarmingUp-acquire<br>
+warmingUp通过acquire的方式获取的令牌，同样会被按照同步的方式获取</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token class-name">RateLimiter</span> r <span class="token operator">=</span><span class="token class-name">RateLimiter</span><span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token class-name">TimeUnit</span><span class="token punctuation">.</span>SECONDS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">long</span> start<span class="token operator">=</span><span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+r<span class="token punctuation">.</span><span class="token function">acquire</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;time cost:&quot;</span><span class="token operator">+</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span>start<span class="token punctuation">)</span><span class="token operator">+</span>&quot;ms”<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">ExecutorService</span> service <span class="token operator">=</span> <span class="token class-name">Executors</span><span class="token punctuation">.</span><span class="token function">newFixedThreadPool</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">CountDownLatch</span> latch <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CountDownLatch</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span><span class="token number">10</span><span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+
+    service<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">MyTask</span><span class="token punctuation">(</span>latch<span class="token punctuation">,</span> r<span class="token punctuation">,</span>start<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    latch<span class="token punctuation">.</span><span class="token function">countDown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;countdown:&quot;</span> <span class="token operator">+</span> latch<span class="token punctuation">.</span><span class="token function">getCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;countdown over&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+service<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><p>结果如下</p> <div class="language-java extra-class"><pre class="language-java"><code>time cost<span class="token operator">:</span><span class="token number">0</span>ms
+countdown<span class="token operator">:</span><span class="token number">9</span>
+countdown<span class="token operator">:</span><span class="token number">8</span>
+countdown<span class="token operator">:</span><span class="token number">7</span>
+countdown<span class="token operator">:</span><span class="token number">6</span>
+countdown<span class="token operator">:</span><span class="token number">5</span>
+countdown<span class="token operator">:</span><span class="token number">4</span>
+countdown<span class="token operator">:</span><span class="token number">3</span>
+countdown<span class="token operator">:</span><span class="token number">2</span>
+countdown<span class="token operator">:</span><span class="token number">1</span>
+countdown<span class="token operator">:</span><span class="token number">0</span>
+countdown over
+result<span class="token operator">:</span><span class="token number">3.496859</span> time <span class="token number">3521</span>ms
+result<span class="token operator">:</span><span class="token number">5.496854</span> time <span class="token number">5506</span>ms
+result<span class="token operator">:</span><span class="token number">7.49685</span> time <span class="token number">7505</span>ms
+result<span class="token operator">:</span><span class="token number">9.496835</span> time <span class="token number">9504</span>ms
+result<span class="token operator">:</span><span class="token number">11.496821</span> time <span class="token number">11505</span>ms
+result<span class="token operator">:</span><span class="token number">13.496807</span> time <span class="token number">13502</span>ms
+result<span class="token operator">:</span><span class="token number">15.496793</span> time <span class="token number">15504</span>ms
+result<span class="token operator">:</span><span class="token number">17.496778</span> time <span class="token number">17506</span>ms
+result<span class="token operator">:</span><span class="token number">19.496707</span> time <span class="token number">19506</span>ms
+result<span class="token operator">:</span><span class="token number">21.496699</span> time <span class="token number">21506</span>ms
+</code></pre></div><p>转载<a href="https://juejin.im/post/5bb48d7b5188255c865e31bc" target="_blank" rel="noopener noreferrer">限流原理解读之guava中的RateLimiter<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p></div> <div class="page-edit"><!----> <!----></div> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/framework/spring/接口流量控制.html" class="prev">
+          接口流量控制
+        </a></span> <span class="next"><a href="/framework/springCore/">
+          spring-core 包结构
+        </a>
+        →
+      </span></p></div> </div> <!----></div></div>
+    <script src="/assets/js/app.b754686d.js" defer></script><script src="/assets/js/38.58a9ee5e.js" defer></script>
+  </body>
+</html>
